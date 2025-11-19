@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/db';
+// import { prisma } from '@/lib/db';
 import { generateChatflowWorkflow } from '@/workflows/generate-chatflow';
 
 const generateChatflowSchema = z.object({
@@ -22,25 +22,27 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const { description } = generateChatflowSchema.parse(body);
 
-        // TODO: Get user ID from session (Supabase Auth)
-        const userId = 'temp-user-id';
-
         // Trigger the AI workflow to generate chatflow schema
         const schema = await generateChatflowWorkflow(description);
 
-        // Create the chatflow in the database
-        const chatflow = await prisma.chatflow.create({
-            data: {
-                name: schema.name,
-                description,
-                schema: schema as any, // Prisma Json type
-                userId,
-                shareUrl: generateShareUrl(),
-                status: 'DRAFT',
-            },
-        });
+        // TODO: Database not yet initialized - will enable after running migrations
+        // const chatflow = await prisma.chatflow.create({
+        //     data: {
+        //         name: schema.name,
+        //         description,
+        //         schema: schema as any,
+        //         userId: 'temp-user-id',
+        //         shareUrl: generateShareUrl(),
+        //         status: 'DRAFT',
+        //     },
+        // });
 
-        return NextResponse.json(chatflow, { status: 201 });
+        // Return the generated schema for now
+        return NextResponse.json({
+            ...schema,
+            shareUrl: generateShareUrl(),
+            status: 'DRAFT',
+        }, { status: 201 });
     } catch (error) {
         if (error instanceof z.ZodError) {
             return NextResponse.json(
