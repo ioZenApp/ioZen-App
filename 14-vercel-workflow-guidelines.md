@@ -1,7 +1,8 @@
 # Vercel Workflow Implementation Guidelines
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Last Updated:** 2025-11-18  
+**Status:** ✅ Installed (v4.0.1-beta.15)  
 **Purpose:** Comprehensive guide for implementing Vercel Workflow in IoZen
 
 ---
@@ -226,26 +227,52 @@ export async function POST(req: Request) {
 pnpm add workflow
 ```
 
-**Note:** As of 2025-11-18, the `workflow` package is not yet available on npm. Vercel Workflow is in Beta. For now, we'll use simple async functions with similar patterns.
+**Status:** ✅ **Installed** (v4.0.1-beta.15)
 
-### 3.2 Next.js Integration
+The workflow package is available and installed in the IoZen project.
+
+### 3.2 Configure Next.js
+
+**Wrap your `next.config.ts` with `withWorkflow()`:**
+
+```typescript
+import { withWorkflow } from 'workflow/next';
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default withWorkflow(nextConfig);
+```
+
+**Status:** ✅ **Configured**
+
+This enables usage of the `'use workflow'` and `'use step'` directives in your code.
+
+### 3.3 Project Structure
 
 Workflows automatically compile into API routes in Next.js.
 
-**File Structure:**
+**Recommended File Structure:**
 ```
 app/
-├── workflows/
-│   ├── chatflow-generation.ts
-│   ├── conversation-engine.ts
-│   └── result-interpretation.ts
-└── api/
-    └── workflows/
-        └── [workflow]/
-            └── route.ts
+├── src/
+│   ├── workflows/              # Workflow definitions
+│   │   ├── chatflow-generation.ts
+│   │   ├── conversation-engine.ts
+│   │   ├── result-interpretation.ts
+│   │   └── test-workflow.ts   # ✅ Created for testing
+│   └── app/
+│       └── api/                # API routes to trigger workflows
+│           ├── chatflows/
+│           │   └── create/
+│           │       └── route.ts
+│           └── test-workflow/  # ✅ Test endpoint
+│               └── route.ts
 ```
 
-### 3.3 Environment Variables
+### 3.4 Environment Variables
 
 No special environment variables needed for Workflow itself. It uses your existing Vercel infrastructure.
 
