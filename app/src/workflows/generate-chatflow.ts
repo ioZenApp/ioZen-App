@@ -1,4 +1,3 @@
-import { workflow } from 'workflow';
 import Anthropic from '@anthropic-ai/sdk';
 
 const anthropic = new Anthropic({
@@ -18,7 +17,9 @@ interface ChatflowSchema {
     fields: ChatflowField[];
 }
 
-export const generateChatflowWorkflow = workflow('generate-chatflow', async (description: string): Promise<ChatflowSchema> => {
+async function callAnthropicAPI(description: string) {
+    'use step';
+
     const prompt = `You are a chatflow designer. Generate a structured chatflow based on this description:
 
 "${description}"
@@ -64,7 +65,13 @@ Make important fields required.`;
         throw new Error('Failed to extract JSON from Claude response');
     }
 
-    const schema: ChatflowSchema = JSON.parse(jsonMatch[0]);
+    return JSON.parse(jsonMatch[0]);
+}
+
+export async function generateChatflowWorkflow(description: string): Promise<ChatflowSchema> {
+    'use workflow';
+
+    const schema = await callAnthropicAPI(description);
 
     // Validate the schema
     if (!schema.name || !Array.isArray(schema.fields) || schema.fields.length === 0) {
@@ -72,4 +79,4 @@ Make important fields required.`;
     }
 
     return schema;
-});
+}
