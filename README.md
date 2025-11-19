@@ -58,7 +58,7 @@ iozen/
 
 ```bash
 # Clone the repository
-git clone https://github.com/chalajacobo/ioZen-App.git
+git clone https://github.com/ioZenApp/ioZen-App.git
 cd ioZen-App
 
 # Install dependencies
@@ -185,9 +185,9 @@ MIT License - See LICENSE file for details
 
 ## 🔗 Links
 
-- **GitHub**: [chalajacobo/ioZen-App](https://github.com/chalajacobo/ioZen-App)
+- **GitHub**: [ioZenApp/ioZen-App](https://github.com/ioZenApp/ioZen-App)
 - **Documentation**: See `/docs` directory
-- **Issues**: [GitHub Issues](https://github.com/chalajacobo/ioZen-App/issues)
+- **Issues**: [GitHub Issues](https://github.com/ioZenApp/ioZen-App/issues)
 
 ---
 

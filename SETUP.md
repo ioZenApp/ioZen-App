@@ -94,7 +94,7 @@ vercel --prod
 ### ✅ Git Initialized
 - **Location:** Root directory (`/Users/jacobomoreno/Dev/iozen`)
 - **Branch:** `main`
-- **Remote:** `https://github.com/chalajacobo/ioZen-App.git`
+- **Remote:** `https://github.com/ioZenApp/ioZen-App.git`
 - **Initial Commit:** Complete (41 files)
 
 ### Next: Create GitHub Repository
