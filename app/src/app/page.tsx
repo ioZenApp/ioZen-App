@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'analytics' | 'settings'>('dashboard');
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
@@ -60,13 +61,31 @@ export default function Home() {
 
         {/* Desktop Navigation Tabs */}
         <div className="hidden md:flex px-4 md:px-6 items-center gap-6 overflow-x-auto no-scrollbar">
-          <button className="h-12 text-sm font-medium border-b-2 border-white text-white">
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`h-12 text-sm font-medium border-b-2 transition-colors ${activeTab === 'dashboard'
+              ? 'border-white text-white'
+              : 'border-transparent text-neutral-400 hover:text-neutral-200'
+              }`}
+          >
             Dashboard
           </button>
-          <button className="h-12 text-sm font-medium border-b-2 border-transparent text-neutral-400 hover:text-neutral-200">
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`h-12 text-sm font-medium border-b-2 transition-colors ${activeTab === 'analytics'
+              ? 'border-white text-white'
+              : 'border-transparent text-neutral-400 hover:text-neutral-200'
+              }`}
+          >
             Analytics
           </button>
-          <button className="h-12 text-sm font-medium border-b-2 border-transparent text-neutral-400 hover:text-neutral-200">
+          <button
+            onClick={() => setActiveTab('settings')}
+            className={`h-12 text-sm font-medium border-b-2 transition-colors ${activeTab === 'settings'
+              ? 'border-white text-white'
+              : 'border-transparent text-neutral-400 hover:text-neutral-200'
+              }`}
+          >
             Settings
           </button>
         </div>
@@ -76,13 +95,25 @@ export default function Home() {
           <div className="md:hidden absolute top-16 left-0 right-0 bg-black border-b border-neutral-800 p-4 flex flex-col gap-4 shadow-2xl animate-in slide-in-from-top-5">
             <div className="flex flex-col gap-2">
               <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Navigation</div>
-              <div className="flex items-center h-10 px-2 rounded-md text-sm font-medium bg-neutral-800 text-white">
+              <button
+                onClick={() => { setActiveTab('dashboard'); setIsMobileMenuOpen(false); }}
+                className={`flex items-center h-10 px-2 rounded-md text-sm font-medium ${activeTab === 'dashboard' ? 'bg-neutral-800 text-white' : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900'
+                  }`}
+              >
                 Dashboard
-              </div>
-              <button className="flex items-center h-10 px-2 rounded-md text-sm font-medium text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900">
+              </button>
+              <button
+                onClick={() => { setActiveTab('analytics'); setIsMobileMenuOpen(false); }}
+                className={`flex items-center h-10 px-2 rounded-md text-sm font-medium ${activeTab === 'analytics' ? 'bg-neutral-800 text-white' : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900'
+                  }`}
+              >
                 Analytics
               </button>
-              <button className="flex items-center h-10 px-2 rounded-md text-sm font-medium text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900">
+              <button
+                onClick={() => { setActiveTab('settings'); setIsMobileMenuOpen(false); }}
+                className={`flex items-center h-10 px-2 rounded-md text-sm font-medium ${activeTab === 'settings' ? 'bg-neutral-800 text-white' : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900'
+                  }`}
+              >
                 Settings
               </button>
             </div>
@@ -110,7 +141,17 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto w-full">
-        <AdminView />
+        {activeTab === 'dashboard' && <AdminView />}
+        {activeTab === 'analytics' && (
+          <div className="flex flex-col items-center justify-center h-[60vh] text-neutral-500">
+            <p>Analytics view coming soon</p>
+          </div>
+        )}
+        {activeTab === 'settings' && (
+          <div className="flex flex-col items-center justify-center h-[60vh] text-neutral-500">
+            <p>Settings view coming soon</p>
+          </div>
+        )}
       </main>
     </div>
   );

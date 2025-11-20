@@ -1,5 +1,5 @@
 import { type HTMLAttributes, forwardRef } from 'react';
-import { Hash, Calendar, Mail, Type, ToggleLeft, Image as ImageIcon, X } from 'lucide-react';
+import { Hash, Calendar, Mail, Type, ToggleLeft, Image as ImageIcon, X, FileText, Phone, Link as LinkIcon, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const fieldTypeIcons = {
@@ -9,7 +9,12 @@ const fieldTypeIcons = {
     date: Calendar,
     boolean: ToggleLeft,
     long_text: Type,
+    textarea: FileText,
     image: ImageIcon,
+    file: ImageIcon,
+    phone: Phone,
+    url: LinkIcon,
+    select: List,
 };
 
 interface FieldItemProps extends HTMLAttributes<HTMLDivElement> {

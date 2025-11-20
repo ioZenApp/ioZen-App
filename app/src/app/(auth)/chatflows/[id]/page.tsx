@@ -36,27 +36,22 @@ export default function ChatflowConfigPage({ params }: { params: { id: string } 
     const [publishing, setPublishing] = useState(false);
 
     useEffect(() => {
-        // TODO: Fetch chatflow from API
-        // For now, using mock data
-        setTimeout(() => {
-            setChatflow({
-                id: params.id,
-                name: 'Insurance Claim Bot',
-                description: 'Create an insurance claim chatflow',
-                schema: {
-                    name: 'Insurance Claim Bot',
-                    fields: [
-                        { name: 'policyNumber', label: 'Policy Number', type: 'text', required: true },
-                        { name: 'incidentDate', label: 'Date of Incident', type: 'date', required: true },
-                        { name: 'description', label: 'Incident Description', type: 'long_text', required: true },
-                        { name: 'damagePhotos', label: 'Damage Photos', type: 'image', required: false },
-                    ],
-                },
-                status: 'DRAFT',
-                shareUrl: 'claim-abc123',
-            });
-            setLoading(false);
-        }, 500);
+        const fetchChatflow = async () => {
+            try {
+                const response = await fetch(`/api/chatflow/${params.id}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch chatflow');
+                }
+                const data = await response.json();
+                setChatflow(data.chatflow);
+            } catch (error) {
+                console.error('Error fetching chatflow:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchChatflow();
     }, [params.id]);
 
     const handlePublish = async () => {
