@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/ui/data-display";
 import { Input, Label } from "@/ui/forms";
@@ -35,10 +35,11 @@ import {
     DropdownMenuTrigger,
 } from "@/ui/overlays";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/layout";
-import { FieldEditor } from "@/features/chatflow";
+import { FieldEditor, ChatflowMonitor } from "@/features/chatflow";
 import { toast } from "sonner";
 import { updateChatflowAction, publishChatflowAction } from "@/app/actions/chatflow";
 import { Chatflow, ChatflowField, isChatflowSchema } from "@/types";
+import { cn } from "@/lib/utils";
 
 export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
     const [activeTab, setActiveTab] = useState<"config" | "preview">("config");
@@ -56,6 +57,14 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
         }
         return [];
     });
+
+    // Sync state with props when server data updates (via router.refresh)
+    useEffect(() => {
+        setChatflowName(chatflow.name);
+        if (isChatflowSchema(chatflow.schema)) {
+            setFields(chatflow.schema.fields);
+        }
+    }, [chatflow]);
 
     const selectedField = fields.find(f => f.id === selectedFieldId);
 
@@ -172,6 +181,7 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
 
     return (
         <div className="space-y-6">
+            <ChatflowMonitor chatflowId={chatflow.id} />
             {/* Header Actions */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="space-y-1">
@@ -210,12 +220,28 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                                 <CardHeader className="space-y-4 pb-4">
                                     <div className="space-y-2">
                                         <Label className="text-neutral-300 text-sm font-medium">Chatflow Name</Label>
-                                        <Input
-                                            value={chatflowName}
-                                            onChange={(e) => setChatflowName(e.target.value)}
-                                            className="bg-neutral-950 border-neutral-800 text-neutral-200"
-                                            placeholder="My Awesome Chatflow"
-                                        />
+                                        <div className="relative">
+                                            <Input
+                                                value={chatflowName}
+                                                onChange={(e) => setChatflowName(e.target.value)}
+                                                className={cn(
+                                                    "bg-neutral-950 border-neutral-800 text-neutral-200 pr-10",
+                                                    chatflowName === "Generating Chatflow..." && "animate-pulse text-neutral-400"
+                                                )}
+                                                placeholder="My Awesome Chatflow"
+                                                disabled={chatflowName === "Generating Chatflow..."}
+                                            />
+                                            {chatflowName === "Generating Chatflow..." && (
+                                                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                                    <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+                                                </div>
+                                            )}
+                                        </div>
+                                        {chatflowName === "Generating Chatflow..." && (
+                                            <p className="text-xs text-blue-400 animate-pulse">
+                                                AI is generating your chatflow structure...
+                                            </p>
+                                        )}
                                     </div>
                                     <Separator className="bg-neutral-800" />
                                     <div className="flex flex-row items-center justify-between">

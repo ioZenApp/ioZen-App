@@ -242,6 +242,28 @@ Don't use for:
 - Rare updates (manual refresh is fine)
 - Public endpoints (real-time requires authentication)
 
+### 4. Real-time Updates
+
+> [!TIP]
+> For detailed implementation guidelines and troubleshooting, see [Supabase Realtime Guidelines](./supabase-realtime-guidelines.md).
+
+We use Supabase Realtime for instant feedback.
+
+**Pattern:**
+1.  **Client Subscription:** Component subscribes to `postgres_changes`.
+2.  **Server Action:** Backend updates the database.
+3.  **Event Trigger:** Database pushes change to client.
+4.  **UI Refresh:** Client calls `router.refresh()` to re-fetch Server Components.
+
+**Example:**
+```typescript
+// See docs/supabase-realtime-guidelines.md for full code pattern
+supabase.channel('room-1')
+  .on('postgres_changes', { event: 'UPDATE', ... }, () => {
+    router.refresh();
+  })
+  .subscribe();
+```
 ### Real-time Pattern
 
 ```typescript
@@ -263,7 +285,7 @@ export function ChatflowMonitor({ chatflowId }: { chatflowId: string }) {
         {
           event: 'UPDATE',
           schema: 'public',
-          table: 'Chatflow',
+          table: 'chatflows',
           filter: `id=eq.${chatflowId}`
         },
         () => {

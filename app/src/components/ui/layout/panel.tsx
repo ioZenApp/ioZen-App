@@ -1,7 +1,7 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface PanelProps extends HTMLAttributes<HTMLDivElement> { }
+export type PanelProps = HTMLAttributes<HTMLDivElement>;
 
 export const Panel = forwardRef<HTMLDivElement, PanelProps>(
     ({ className, ...props }, ref) => {
@@ -20,7 +20,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>(
 
 Panel.displayName = 'Panel';
 
-export interface PanelHeaderProps extends HTMLAttributes<HTMLDivElement> { }
+export type PanelHeaderProps = HTMLAttributes<HTMLDivElement>;
 
 export const PanelHeader = forwardRef<HTMLDivElement, PanelHeaderProps>(
     ({ className, ...props }, ref) => {
@@ -39,7 +39,7 @@ export const PanelHeader = forwardRef<HTMLDivElement, PanelHeaderProps>(
 
 PanelHeader.displayName = 'PanelHeader';
 
-export interface PanelBodyProps extends HTMLAttributes<HTMLDivElement> { }
+export type PanelBodyProps = HTMLAttributes<HTMLDivElement>;
 
 export const PanelBody = forwardRef<HTMLDivElement, PanelBodyProps>(
     ({ className, ...props }, ref) => {

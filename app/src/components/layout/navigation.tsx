@@ -131,6 +131,7 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
+                  suppressHydrationWarning
                   className="flex items-center gap-2 p-1 rounded-full hover:bg-[var(--background-tertiary)] transition-colors"
                   aria-label="User menu"
                 >

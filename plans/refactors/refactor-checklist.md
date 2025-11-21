@@ -263,18 +263,19 @@ POST   /api/chatflows/submit    # Submit to chatflow (public)
 - [x] File: `app/src/types/chatflow.ts`
 - [x] Documented pattern in `docs/coding-standards.md`
 
-### Post-Phase 4: Auto-refresh Bug Fix ⏱️ 1-2 hours
+### Post-Phase 4: Auto-refresh Bug Fix 
 
 **Bug:** Chatflow title shows "Generating" but UI doesn't auto-update after AI generation completes. Manual page refresh required.
 
 **Solution:** Implement Supabase Real-time subscription to monitor chatflow updates.
 
-- [ ] Create `ChatflowMonitor` component with real-time subscription
-- [ ] Subscribe to `UPDATE` events on `Chatflow` table filtered by `chatflowId`
-- [ ] Call `router.refresh()` when chatflow is updated
-- [ ] Add monitor to chatflow edit page
-- [ ] Update documentation with real-time patterns (architecture.md, coding-standards.md)
-- [ ] Test: Verify UI auto-updates after generation without manual refresh
+- [x] Create `ChatflowMonitor` component with real-time subscription
+- [x] Subscribe to `UPDATE` events on `chatflows` table filtered by `chatflowId`
+- [x] Call `router.refresh()` when chatflow is updated
+- [x] Add monitor to chatflow edit page
+- [x] Update documentation with real-time patterns (architecture.md, standards.md, supabase-realtime-guidelines.md)
+- [x] Test: Verify UI auto-updates after generation without manual refresh
+- [x] Follow all our coding standards and patterns
 
 ---
 
@@ -371,35 +372,35 @@ POST   /api/chatflows/submit    # Submit to chatflow (public)
 ## Phase 7: Documentation & Standards ⏱️ 2 hours
 
 ### Environment Setup
-- [ ] Create `.env.example` from [.env](file:///Users/jacobomoreno/Dev/iozen/app/.env)
-- [ ] Remove sensitive values
-- [ ] Document all required variables
-- [ ] Add comments explaining each variable
+- [x] Create `.env.example` from [.env](file:///Users/jacobomoreno/Dev/iozen/app/.env)
+- [x] Remove sensitive values
+- [x] Document all required variables
+- [x] Add comments explaining each variable
 
 ### Update Documentation
-- [ ] Update [CLAUDE.md](file:///Users/jacobomoreno/Dev/iozen/app/CLAUDE.md) with new patterns
-- [ ] Add component organization section
-- [ ] Add API route patterns section
-- [ ] Add testing requirements section
-- [ ] Add import ordering rules
+- [x] Update [CLAUDE.md](file:///Users/jacobomoreno/Dev/iozen/app/CLAUDE.md) with new patterns
+- [x] Add component organization section
+- [x] Add API route patterns section
+- [x] Add testing requirements section
+- [x] Add import ordering rules
 
 ### Create Contributing Guide
-- [ ] Create `CONTRIBUTING.md`
-- [ ] Document code organization
-- [ ] Document naming conventions
-- [ ] Document commit process
-- [ ] Add "before committing" checklist
+- [x] Create `CONTRIBUTING.md`
+- [x] Document code organization
+- [x] Document naming conventions
+- [x] Document commit process
+- [x] Add "before committing" checklist
 
 ### Update README
-- [ ] Update project structure section
-- [ ] Add testing instructions
-- [ ] Add contribution guidelines link
-- [ ] Update scripts documentation
+- [x] Update project structure section
+- [x] Add testing instructions
+- [x] Add contribution guidelines link
+- [x] Update scripts documentation
 
 ### Verification
-- [ ] All docs are up to date
-- [ ] New developer can follow setup
-- [ ] Examples are accurate
+- [x] All docs are up to date
+- [x] New developer can follow setup
+- [x] Examples are accurate
 
 ---
 
@@ -497,4 +498,11 @@ Use this section to track issues, decisions, or questions during refactor:
 - All builds and type checks passing
 - Test execution time: ~1.6 seconds
 - Documentation updated across all docs/ files with testing standards
+
+[2025-11-21] Post-Phase 4 Realtime Fix Completed
+- Fixed "Infinite Recursion" bug in RLS policies for `workspace_members`
+- Implemented "Sync on Connect" pattern in `ChatflowMonitor`
+- Created `docs/supabase-realtime-guidelines.md` with best practices
+- Updated `docs/architecture.md` and `docs/standards.md`
+- Verified auto-refresh works correctly with user
 ```

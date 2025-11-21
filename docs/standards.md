@@ -698,6 +698,50 @@ export function StaticContent() {
 
 ---
 
+## Realtime Standards
+
+### Supabase Realtime
+
+Use the `ChatflowMonitor` pattern for real-time updates.
+
+```typescript
+// ✅ GOOD - Dedicated monitor component
+export function ChatflowMonitor({ chatflowId }: { chatflowId: string }) {
+  const router = useRouter()
+  const supabase = createClient()
+
+  useEffect(() => {
+    const channel = supabase
+      .channel(`chatflow-${chatflowId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'chatflows',
+          filter: `id=eq.${chatflowId}`
+        },
+        () => router.refresh()
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [chatflowId, router, supabase])
+
+  return null
+}
+```
+
+**Key Principles:**
+1.  **Separation of Concerns**: Keep subscription logic in a separate component (`Monitor`) to avoid cluttering the main UI component.
+2.  **Server-Client Sync**: Use `router.refresh()` to trigger a re-fetch of Server Components when data changes.
+3.  **Cleanup**: Always unsubscribe/remove channels in the cleanup function of `useEffect`.
+4.  **Filtering**: Always filter events by ID to avoid unnecessary updates.
+
+---
+
 ## Testing Standards
 
 ### Test Organization
