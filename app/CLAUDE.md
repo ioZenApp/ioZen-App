@@ -143,6 +143,39 @@ const isAdmin = useHasRole('ADMIN')
 
 ## API Route Standards
 
+### API Naming Conventions
+
+**Philosophy**: "The way you do small things is the way you do everything."
+
+Establish clean RESTful conventions from day one:
+
+**✅ DO:**
+- Use **plural resource names**: `/api/chatflows` (not `/api/chatflow`)
+- Follow **RESTful patterns**: Standard HTTP methods and routes
+- Keep naming **consistent**: All resources follow the same pattern
+- Think **future-proof**: Patterns that scale
+
+**❌ DON'T:**
+- Mix singular and plural naming
+- Create custom action names when REST verbs suffice
+- Add versioning prematurely
+
+**Route Structure:**
+```
+GET    /api/chatflows              # List all
+POST   /api/chatflows              # Create new
+GET    /api/chatflows/[id]         # Get one
+PATCH  /api/chatflows/[id]         # Update
+DELETE /api/chatflows/[id]         # Delete
+POST   /api/chatflows/[id]/publish # Custom action
+POST   /api/chatflows/submit       # Public endpoint
+```
+
+**Public vs. Authenticated:**
+- Most endpoints require `requireAuth()`
+- Public endpoints must validate resource accessibility
+- Example: `/submit` only accepts submissions to **PUBLISHED** chatflows
+
 ### Standard Template
 
 ```typescript
@@ -516,19 +549,73 @@ const handleSubmit = async () => {
 ```
 src/lib/utils.ts          → src/lib/__tests__/utils.test.ts
 src/components/button.tsx → src/components/__tests__/button.test.tsx
+src/test/                  # Test utilities and mocks
+  ├── setup.ts            # Global test setup
+  ├── utils.tsx           # Rendering helpers
+  └── factories.ts        # Test data factories
 ```
 
 ### Test Structure
 ```typescript
 import { describe, it, expect } from 'vitest'
+import { render, screen } from '@/test/utils'
 
-describe('Button', () => {
-  it('renders with text', () => {
-    // ...
+describe('Component/Function Name', () => {
+  it('describes expected behavior', () => {
+    // Arrange
+    const input = 'test'
+    
+    // Act
+    const result = myFunction(input)
+    
+    // Assert
+    expect(result).toBe('expected')
   })
+})
+```
 
-  it('calls onClick when clicked', () => {
-    // ...
+### Running Tests
+```bash
+pnpm test              # Watch mode
+pnpm test:ui           # Visual UI
+pnpm test:run          # CI mode
+pnpm test:coverage     # With coverage
+```
+
+### SOLID Testing Principles
+
+**Test against interfaces, not implementations:**
+```typescript
+// Mock external dependencies
+vi.mock('@/lib/db')
+vi.mock('@/lib/supabase/server')
+
+// Test against AuthContext interface
+const mockAuth: AuthContext = {
+  user: { id: 'test-id', email: 'test@example.com' },
+  profile: { id: 'test-id', email: 'test@example.com', name: 'Test' }
+}
+```
+
+**Use test factories (Builder Pattern):**
+```typescript
+import { ProfileFactory, ChatflowFactory } from '@/test/factories'
+
+const profile = new ProfileFactory()
+  .withEmail('john@example.com')
+  .build()
+```
+
+**Contract testing:**
+```typescript
+// Verify API responses follow ApiResponse<T> interface
+it('returns correct interface', async () => {
+  const response = await handler(req)
+  const data = await response.json()
+  
+  expect(data).toMatchObject({
+    success: true,
+    data: expect.any(Object)
   })
 })
 ```
@@ -632,6 +719,7 @@ For detailed information, see:
 - [Quick Reference](../docs/quick-reference.md) - Common patterns and snippets
 - [Standards](../docs/standards.md) - Complete coding standards
 - [Architecture](../docs/architecture.md) - System design and patterns
+- [API Naming Standards](../docs/API-NAMING-STANDARDS.md) - RESTful API conventions
 - [AI Guidelines](../docs/AI-GUIDELINES.md) - AI agent guidelines
 - [Workflows](../docs/vercel-workflow-guidelines.md) - Workflow patterns
 - [Cheatsheet](../docs/cheatsheet.md) - Command reference

@@ -174,7 +174,10 @@ pnpm build
 # 3. Lint
 pnpm lint
 
-# 4. Manual testing
+# 4. Run tests
+pnpm test:run
+
+# 5. Manual testing
 pnpm dev
 # Test the feature you built
 ```
@@ -189,6 +192,86 @@ pnpm dev
 - [ ] Loading states shown
 - [ ] TypeScript errors resolved
 - [ ] No console.logs in production code
+- [ ] Tests written for new functionality
+- [ ] Existing tests still pass
+
+---
+
+## Testing Guidelines
+
+### When to Write Tests
+
+**Always write tests for:**
+- New utility functions
+- New type guards
+- New API handlers
+- Bug fixes (regression tests)
+
+**Consider writing tests for:**
+- New UI components
+- Complex business logic
+- Critical user flows
+
+**Don't write tests for:**
+- Configuration files
+- Type definitions
+- One-line wrappers
+
+### Test Quality
+
+```typescript
+// ✅ GOOD - Tests behavior against interface
+it('returns AuthContext when authenticated', async () => {
+  const mockAuth: AuthContext = {
+    user: { id: 'test-id', email: 'test@example.com' },
+    profile: { id: 'test-id', email: 'test@example.com', name: 'Test' }
+  }
+  
+  vi.mocked(getAuthContext).mockResolvedValue(mockAuth)
+  const result = await requireAuth()
+  
+  expect(result).toHaveProperty('auth')
+  expect(result.auth).toEqual(mockAuth)
+})
+
+// ❌ BAD - Tests implementation details
+it('calls prisma.profile.findUnique', async () => {
+  await getAuthContext()
+  expect(prisma.profile.findUnique).toHaveBeenCalled()
+})
+```
+
+### Using Test Factories
+
+```typescript
+// ✅ GOOD - Use factories for test data
+import { ProfileFactory, ChatflowFactory } from '@/test/factories'
+
+const profile = new ProfileFactory()
+  .withEmail('test@example.com')
+  .build()
+
+// ❌ BAD - Inline test data
+const profile = {
+  id: 'test-id',
+  email: 'test@example.com',
+  name: 'Test',
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+```
+
+### Mocking Strategy
+
+```typescript
+// ✅ GOOD - Mock at module level
+vi.mock('@/lib/db')
+import prisma from '@/lib/db'
+vi.mocked(prisma.profile.findUnique).mockResolvedValue(mockProfile)
+
+// ❌ BAD - Monkey patching
+prisma.profile.findUnique = async () => mockProfile
+```
 
 ---
 

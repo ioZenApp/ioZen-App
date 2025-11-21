@@ -318,6 +318,85 @@ types/
 
 ---
 
+## Testing Patterns
+
+### Unit Test (Utility Function)
+
+```typescript
+import { describe, it, expect } from 'vitest'
+import { cn } from '../utils'
+
+describe('cn', () => {
+  it('merges class names correctly', () => {
+    expect(cn('foo', 'bar')).toBe('foo bar')
+  })
+  
+  it('handles conditional classes', () => {
+    expect(cn('foo', false && 'bar')).toBe('foo')
+  })
+})
+```
+
+### Component Test
+
+```typescript
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen } from '@/test/utils'
+import { Button } from '../button'
+import userEvent from '@testing-library/user-event'
+
+describe('Button', () => {
+  it('calls onClick when clicked', async () => {
+    const handleClick = vi.fn()
+    const user = userEvent.setup()
+    
+    render(<Button onClick={handleClick}>Click</Button>)
+    await user.click(screen.getByText('Click'))
+    
+    expect(handleClick).toHaveBeenCalledOnce()
+  })
+})
+```
+
+### API Handler Test
+
+```typescript
+import { describe, it, expect } from 'vitest'
+import { NextRequest } from 'next/server'
+import { createApiHandler } from '../api-utils'
+
+describe('createApiHandler', () => {
+  it('returns success response', async () => {
+    const handler = createApiHandler(async () => ({
+      message: 'Success'
+    }))
+    
+    const req = new NextRequest('http://localhost/api/test')
+    const response = await handler(req)
+    const data = await response.json()
+    
+    expect(data).toEqual({
+      success: true,
+      data: { message: 'Success' }
+    })
+  })
+})
+```
+
+### Test Factory
+
+```typescript
+import { ProfileFactory } from '@/test/factories'
+
+// Create test data with builder pattern
+const profile = new ProfileFactory()
+  .withEmail('test@example.com')
+  .withName('Test User')
+  .build()
+```
+
+---
+
 ## Common Commands
 
 ```bash
@@ -333,8 +412,10 @@ npx prisma migrate dev --name description  # Create migration
 npx prisma generate         # Regenerate client
 
 # Testing
-pnpm test                   # Run tests
-pnpm test:ui                # Test UI
+pnpm test                   # Run tests (watch mode)
+pnpm test:ui                # Test UI (visual)
+pnpm test:run               # Run once (CI)
+pnpm test:coverage          # With coverage report
 ```
 
 ---

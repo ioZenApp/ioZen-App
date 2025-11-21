@@ -326,16 +326,33 @@ src/
 
 ## API Design
 
+### Naming Convention Philosophy
+
+**"The way you do small things is the way you do everything."**
+
+We establish clean conventions from day one:
+
+- ✅ **Plural resource names** - `/api/chatflows` not `/api/chatflow`
+- ✅ **Consistent RESTful patterns** - Industry-standard HTTP methods and routes
+- ✅ **Pre-launch advantage** - No legacy URLs to support, clean slate
+- ✅ **Future-proof** - Patterns that scale as the product grows
+
 ### RESTful Conventions
 
 ```
-GET    /api/chatflows              # List
-POST   /api/chatflows              # Create
-GET    /api/chatflows/:id          # Read
-PATCH  /api/chatflows/:id          # Update
-DELETE /api/chatflows/:id          # Delete
-POST   /api/chatflows/:id/publish  # Action
+GET    /api/chatflows              # List all chatflows
+POST   /api/chatflows              # Create new chatflow
+GET    /api/chatflows/:id          # Get one chatflow
+PATCH  /api/chatflows/:id          # Update chatflow
+DELETE /api/chatflows/:id          # Delete chatflow
+POST   /api/chatflows/:id/publish  # Action (publish)
+POST   /api/chatflows/submit       # Public submission endpoint
 ```
+
+**Public Endpoints:**
+- `/api/chatflows/submit` - Accepts submissions to **PUBLISHED** chatflows only
+- Unauthenticated access allowed for published chatflows
+- Draft chatflows require authentication + workspace membership
 
 ### Standard Pattern
 
@@ -363,12 +380,128 @@ export async function POST(req: Request) {
 
 ---
 
+## Testing Architecture
+
+### Test Organization
+
+```
+src/
+├── lib/
+│   ├── utils.ts
+│   └── __tests__/
+│       ├── utils.test.ts
+│       ├── api-utils.test.ts
+│       └── action-utils.test.ts
+├── components/
+│   └── ui/
+│       ├── button.tsx
+│       └── __tests__/
+│           └── button.test.tsx
+└── test/
+    ├── setup.ts         # Global test configuration
+    ├── utils.tsx        # Test rendering helpers
+    └── factories.ts     # Test data builders
+```
+
+### SOLID Testing Principles
+
+**Dependency Inversion:**
+- Mock external dependencies (Prisma, Supabase) at module level
+- Test against interfaces (`AuthContext`, `ApiResponse<T>`)
+- Use dependency injection patterns where appropriate
+
+**Interface Segregation:**
+- Focused test utilities (`renderWithProviders`)
+- Separate factories for each domain model
+- Don't test implementation details
+
+**Single Responsibility:**
+- One test per behavior
+- Separate test files by module
+- Clear test names describing expected behavior
+
+**Open/Closed:**
+- Tests extend existing patterns
+- Factories make adding test variations easy
+- Mocks configured in setup, extended in tests
+
+### Test Strategy
+
+```mermaid
+graph TD
+    A[Code Change] --> B{What Changed?}
+    B -->|Utility Function| C[Unit Test]
+    B -->|Type Guard| D[Contract Test]
+    B -->|API Route| E[Integration Test]
+    B -->|UI Component| F[Component Test]
+    
+    C --> G[Fast, Isolated]
+    D --> H[100% Coverage]
+    E --> I[Mock DB/Auth]
+    F --> J[Test Behavior]
+```
+
+### Mocking Strategy
+
+**Global Mocks** (in `test/setup.ts`):
+```typescript
+vi.mock('@/lib/db')
+vi.mock('@/lib/supabase/server')
+vi.mock('next/navigation')
+```
+
+**Test-Specific Mocks:**
+```typescript
+import prisma from '@/lib/db'
+
+vi.mocked(prisma.chatflow.findMany).mockResolvedValue([
+  new ChatflowFactory().build()
+])
+```
+
+### Test Factories (Builder Pattern)
+
+```typescript
+// test/factories.ts
+export class ProfileFactory {
+  private profile: Partial<Profile> = defaultProfile
+  
+  withEmail(email: string): this {
+    this.profile.email = email
+    return this
+  }
+  
+  build(): Profile {
+    return this.profile as Profile
+  }
+}
+```
+
+**Benefits:**
+- Reduces test boilerplate
+- Consistent test data
+- Easy to modify for edge cases
+- Readable test setup
+
+### Coverage Goals
+
+| Layer | Target | Strategy |
+|-------|--------|----------|
+| Utils/Libs | 80%+ | Unit tests |
+| Type Guards | 100% | Contract tests |
+| API Handlers | 70%+ | Integration tests |
+| UI Components | 50%+ | Component tests |
+| Integration | Key flows | E2E (future) |
+
+---
+
 ## Performance Considerations
 
 1. **Server Components by default** - Only use `'use client'` when needed
 2. **Select specific fields** - Don't fetch entire records
 3. **Proper indexing** - Index foreign keys and common queries
 4. **Workflow state < 100KB** - Pass IDs, not full objects
+5. **Fast tests** - Unit tests should run in <5 seconds total
 
 ---
 
@@ -380,3 +513,4 @@ export async function POST(req: Request) {
 - [ ] Validate all input with Zod
 - [ ] Never expose internal IDs in URLs
 - [ ] RLS policies on all tables
+- [ ] Test security boundaries (unauthorized access, cross-tenant isolation)

@@ -7,6 +7,7 @@
 | [Quick Reference](quick-reference.md) | Daily patterns and snippets |
 | [Architecture](architecture.md) | System design, layers, patterns |
 | [Standards](standards.md) | Coding standards for all developers |
+| [API Naming Standards](API-NAMING-STANDARDS.md) | RESTful API naming conventions |
 | [AI Guidelines](AI-GUIDELINES.md) | AI agent instructions |
 | [Workflows](vercel-workflow-guidelines.md) | Vercel Workflow patterns |
 | [Cheatsheet](cheatsheet.md) | Common commands |

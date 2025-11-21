@@ -191,6 +191,39 @@ export function ChatflowEditor({ chatflow, onUpdate }: Props) {
 
 ## API Route Standards
 
+### Naming Conventions
+
+**Philosophy**: "The way you do small things is the way you do everything."
+
+We establish clean RESTful conventions from day one:
+
+**✅ DO:**
+- Use **plural resource names**: `/api/chatflows` (not `/api/chatflow`)
+- Follow **RESTful patterns**: Standard HTTP methods (GET, POST, PATCH, DELETE)
+- Use **consistent naming**: All API routes follow the same pattern
+- Think **future-proof**: Patterns that scale as the product grows
+
+**❌ DON'T:**
+- Mix singular and plural naming
+- Create custom action names when REST verbs work
+- Add versioning prematurely (wait until you need it)
+
+**Route Structure:**
+```
+GET    /api/chatflows              # List all chatflows
+POST   /api/chatflows              # Create new chatflow
+GET    /api/chatflows/[id]         # Get one chatflow
+PATCH  /api/chatflows/[id]         # Update chatflow
+DELETE /api/chatflows/[id]         # Delete chatflow
+POST   /api/chatflows/[id]/publish # Custom action
+POST   /api/chatflows/submit       # Public endpoint
+```
+
+**Public vs. Authenticated Endpoints:**
+- Most endpoints require authentication via `requireAuth()`
+- Public endpoints (like `/submit`) must validate the resource is publicly accessible
+- Example: Submit endpoint only accepts submissions to **PUBLISHED** chatflows
+
 ### Standard Pattern
 
 ```typescript
@@ -665,10 +698,178 @@ export function StaticContent() {
 
 ---
 
+## Testing Standards
+
+### Test Organization
+
+```
+src/lib/utils.ts          → src/lib/__tests__/utils.test.ts
+src/components/button.tsx → src/components/__tests__/button.test.tsx
+src/test/                  # Test utilities and mocks
+  ├── setup.ts            # Global test setup
+  ├── utils.tsx           # Rendering helpers
+  └── factories.ts        # Test data factories
+```
+
+### Test Structure
+
+```typescript
+import { describe, it, expect } from 'vitest'
+import { render, screen } from '@/test/utils'
+
+describe('Component/Function Name', () => {
+  it('describes expected behavior', () => {
+    // Arrange
+    const input = 'test'
+    
+    // Act
+    const result = myFunction(input)
+    
+    // Assert
+    expect(result).toBe('expected')
+  })
+})
+```
+
+### Running Tests
+
+```bash
+pnpm test              # Watch mode
+pnpm test:ui           # Visual UI
+pnpm test:run          # CI mode
+pnpm test:coverage     # With coverage
+```
+
+### Coverage Targets
+
+| Area | Target | Priority |
+|------|--------|----------|
+| Utils/Libs | 80%+ | High |
+| Type Guards | 100% | Critical |
+| UI Components | 50%+ | Medium |
+| API Routes | 70%+ | High |
+
+### SOLID Testing Principles
+
+#### Dependency Inversion
+```typescript
+// Mock external dependencies in test/setup.ts
+vi.mock('@/lib/db')
+vi.mock('@/lib/supabase/server')
+
+// Test against interfaces, not implementations
+const mockAuth: AuthContext = {
+  user: { id: 'test-id', email: 'test@example.com' },
+  profile: { id: 'test-id', email: 'test@example.com', name: 'Test' }
+}
+```
+
+#### Interface Segregation
+```typescript
+// Use focused test helpers
+import { renderWithProviders } from '@/test/utils'
+import { ProfileFactory, ChatflowFactory } from '@/test/factories'
+
+// Don't test implementation details
+it('renders user name', () => {
+  const profile = new ProfileFactory().withName('John').build()
+  render(<UserCard profile={profile} />)
+  expect(screen.getByText('John')).toBeInTheDocument()
+})
+```
+
+#### Single Responsibility
+```typescript
+// One test = one behavior
+it('validates email format', () => {
+  expect(isValidEmail('test@example.com')).toBe(true)
+})
+
+it('rejects invalid email', () => {
+  expect(isValidEmail('invalid')).toBe(false)
+})
+```
+
+### Test Factories (Builder Pattern)
+
+```typescript
+// test/factories.ts
+export class ProfileFactory {
+  private profile: Partial<Profile> = {
+    id: 'test-id',
+    email: 'test@example.com',
+    name: 'Test User'
+  }
+
+  withEmail(email: string): this {
+    this.profile.email = email
+    return this
+  }
+
+  build(): Profile {
+    return this.profile as Profile
+  }
+}
+
+// Usage in tests
+const profile = new ProfileFactory()
+  .withEmail('john@example.com')
+  .build()
+```
+
+### Contract Testing
+
+```typescript
+// Verify API responses follow interfaces
+import type { ApiResponse, ApiError } from '@/types'
+
+it('returns ApiResponse interface', async () => {
+  const response = await handler(req)
+  const data = await response.json()
+  
+  expect(data).toMatchObject({
+    success: true,
+    data: expect.any(Object)
+  })
+})
+```
+
+### Mocking Strategy
+
+```typescript
+// Mock at module level for consistency
+vi.mock('@/lib/db', () => ({
+  default: {
+    profile: {
+      findUnique: vi.fn(),
+      create: vi.fn()
+    }
+  }
+}))
+
+// Use type-safe mocks
+import prisma from '@/lib/db'
+vi.mocked(prisma.profile.findUnique).mockResolvedValue(mockProfile)
+```
+
+### Best Practices
+
+- Test behavior, not implementation
+- Test against interfaces (AuthContext, ApiResponse)
+- Use semantic queries (`getByRole`, `getByLabelText`)
+- Mock external dependencies (DB, APIs, auth)
+- Use factories to create test data
+- Keep tests fast and focused
+- One assertion per test when possible
+- Clear mocks between tests (`beforeEach(() => vi.clearAllMocks())`)
+
+---
+
 ## Additional Resources
 
 - [Quick Reference](./quick-reference.md) - Common patterns and snippets
 - [Architecture](./architecture.md) - System design and patterns
+- [API Naming Standards](./API-NAMING-STANDARDS.md) - RESTful API conventions
 - [AI Guidelines](./AI-GUIDELINES.md) - AI agent instructions
 - [Workflows](./vercel-workflow-guidelines.md) - Vercel Workflow patterns
 - [Cheatsheet](./cheatsheet.md) - Command reference
