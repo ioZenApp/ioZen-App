@@ -1,12 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
-import { Container, PageHeader } from '@/components/layout'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/ui/data-display'
-import { Button } from '@/ui/button'
-import { Badge } from '@/ui/data-display'
 import Link from 'next/link'
-import { Plus, MessageSquare, BarChart3 } from 'lucide-react'
+import { Plus } from 'lucide-react'
+import { Container, PageHeader } from '@/components/layout'
+import { Button } from '@/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/navigation'
+import { OverviewTab } from '@/components/features/dashboard/overview-tab'
+import { AnalyticsTab } from '@/components/features/dashboard/analytics-tab'
+import { getDashboardStats } from '@/lib/dashboard-data'
 
 interface DashboardPageProps {
   params: Promise<{ workspaceSlug: string }>
@@ -42,23 +44,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     take: 5,
   })
 
-  // Get stats
-  const totalChatflows = await prisma.chatflow.count({
-    where: { workspaceId: workspace.id },
-  })
-
-  const totalSubmissions = await prisma.chatflowSubmission.count({
-    where: {
-      chatflow: { workspaceId: workspace.id },
-    },
-  })
-
-  const recentSubmissions = await prisma.chatflowSubmission.count({
-    where: {
-      chatflow: { workspaceId: workspace.id },
-      createdAt: { gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000) },
-    },
-  })
+  // Get dashboard stats
+  const stats = await getDashboardStats(workspace.id)
 
   return (
     <Container>
@@ -75,119 +62,18 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         }
       />
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-[var(--background-tertiary)] rounded-[var(--radius-md)]">
-                <MessageSquare className="w-5 h-5 text-[var(--text-secondary)]" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">
-                  {totalChatflows}
-                </p>
-                <p className="text-sm text-[var(--text-secondary)]">
-                  Total Chatflows
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-[var(--background-tertiary)] rounded-[var(--radius-md)]">
-                <BarChart3 className="w-5 h-5 text-[var(--text-secondary)]" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">
-                  {totalSubmissions}
-                </p>
-                <p className="text-sm text-[var(--text-secondary)]">
-                  Total Submissions
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-[var(--background-tertiary)] rounded-[var(--radius-md)]">
-                <BarChart3 className="w-5 h-5 text-[var(--text-secondary)]" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">
-                  {recentSubmissions}
-                </p>
-                <p className="text-sm text-[var(--text-secondary)]">
-                  This Week
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Chatflows */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Chatflows</CardTitle>
-          <CardDescription>
-            Your latest chatflows and their submission counts
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {chatflows.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-[var(--text-secondary)] mb-4">
-                No chatflows yet. Create your first one!
-              </p>
-              <Link href={`/w/${workspaceSlug}/chatflows/new`}>
-                <Button>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Chatflow
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {chatflows.map((chatflow) => (
-                <Link
-                  key={chatflow.id}
-                  href={`/w/${workspaceSlug}/chatflows/${chatflow.id}`}
-                  className="block"
-                >
-                  <div className="flex items-center justify-between p-4 rounded-[var(--radius-md)] border border-[var(--border-primary)] hover:border-[var(--border-focus)] transition-colors">
-                    <div>
-                      <p className="font-medium text-[var(--text-primary)]">
-                        {chatflow.name}
-                      </p>
-                      <p className="text-sm text-[var(--text-secondary)]">
-                        {chatflow._count.submissions} submissions
-                      </p>
-                    </div>
-                    <Badge
-                      variant={
-                        chatflow.status === 'PUBLISHED'
-                          ? 'published'
-                          : chatflow.status === 'DRAFT'
-                            ? 'draft'
-                            : 'archived'
-                      }
-                    >
-                      {chatflow.status.toLowerCase()}
-                    </Badge>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview" className="space-y-4">
+          <OverviewTab stats={stats} chatflows={chatflows} workspaceSlug={workspaceSlug} />
+        </TabsContent>
+        <TabsContent value="analytics" className="space-y-4">
+          <AnalyticsTab workspaceId={workspace.id} />
+        </TabsContent>
+      </Tabs>
     </Container>
   )
 }

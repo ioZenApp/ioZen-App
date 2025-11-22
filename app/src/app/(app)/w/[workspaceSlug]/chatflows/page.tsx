@@ -59,11 +59,11 @@ export default async function ChatflowsPage({ params }: PageProps) {
             {chatflows.length === 0 ? (
                 <Card className="mt-8">
                     <CardContent className="flex flex-col items-center justify-center py-16">
-                        <MessageSquare className="w-12 h-12 text-[var(--text-tertiary)] mb-4" />
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
+                        <MessageSquare className="w-12 h-12 text-muted-foreground mb-4" />
+                        <h3 className="text-lg font-semibold mb-2">
                             No chatflows yet
                         </h3>
-                        <p className="text-[var(--text-secondary)] mb-6 text-center max-w-md">
+                        <p className="text-muted-foreground mb-6 text-center max-w-md">
                             Create your first chatflow to start collecting conversational data from your users.
                         </p>
                         <Link href={`/w/${workspaceSlug}/chatflows/new`}>
@@ -81,15 +81,15 @@ export default async function ChatflowsPage({ params }: PageProps) {
                             key={chatflow.id}
                             href={`/w/${workspaceSlug}/chatflows/${chatflow.id}`}
                         >
-                            <Card className="h-full hover:border-[var(--border-focus)] transition-colors cursor-pointer">
+                            <Card className="h-full hover:border-primary transition-colors cursor-pointer">
                                 <CardContent className="p-6">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex-1">
-                                            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">
+                                            <h3 className="text-lg font-semibold mb-1">
                                                 {chatflow.name}
                                             </h3>
                                             {chatflow.description && (
-                                                <p className="text-sm text-[var(--text-secondary)] line-clamp-2">
+                                                <p className="text-sm text-muted-foreground line-clamp-2">
                                                     {chatflow.description}
                                                 </p>
                                             )}
@@ -107,7 +107,7 @@ export default async function ChatflowsPage({ params }: PageProps) {
                                         </Badge>
                                     </div>
 
-                                    <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)]">
+                                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                         <div className="flex items-center gap-1">
                                             <BarChart3 className="w-4 h-4" />
                                             <span>{chatflow._count.submissions} submissions</span>

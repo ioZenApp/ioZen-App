@@ -3,3 +3,4 @@ export { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 export { Panel, PanelHeader, PanelBody } from './panel'
 export { ScrollArea, ScrollBar } from './scroll-area'
 export { Separator } from './separator'
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './collapsible'

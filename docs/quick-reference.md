@@ -222,6 +222,121 @@ export function ChatflowMonitor({ chatflowId }: { chatflowId: string }) {
 
 ---
 
+## Data Tables
+
+Use the advanced data table pattern for lists with filtering, sorting, and pagination:
+
+```typescript
+'use client'
+
+import { SubmissionsTable } from '@/components/features/chatflow/submissions-table'
+import type { ChatflowSubmission } from '@/types'
+
+interface PageProps {
+  submissions: ChatflowSubmission[]
+  workspaceSlug: string
+  chatflowId: string
+}
+
+export default function SubmissionsPage({ submissions, workspaceSlug, chatflowId }: PageProps) {
+  return (
+    <Container>
+      <PageHeader title="Submissions" description="View and manage submissions" />
+      <SubmissionsTable 
+        data={submissions}
+        workspaceSlug={workspaceSlug}
+        chatflowId={chatflowId}
+      />
+    </Container>
+  )
+}
+```
+
+### Features
+
+- **URL-synced state**: Filters, sorting, and pagination persist in URL
+- **Bulk actions**: Row selection with bulk operations
+- **Column visibility**: Toggle columns on/off
+- **Sortable headers**: Click to sort by any column
+- **Faceted filters**: Multi-select filters with counts
+- **Global search**: Search across all columns
+- **Responsive**: Horizontal scroll on mobile devices
+
+### Creating a New Table
+
+1. **Define columns** (`*-columns.tsx`):
+
+```typescript
+import { type ColumnDef } from '@tanstack/react-table'
+import { Checkbox } from '@/ui/forms'
+import { DataTableColumnHeader } from '@/components/data-table'
+
+export const columns: ColumnDef<YourType>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+      />
+    ),
+  },
+  {
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+  },
+]
+```
+
+2. **Create table component** (`*-table.tsx`):
+
+```typescript
+'use client'
+
+import { useState } from 'react'
+import { useReactTable, getCoreRowModel, /* ... */ } from '@tanstack/react-table'
+import { DataTableToolbar, DataTablePagination } from '@/components/data-table'
+import { useTableUrlState } from '@/hooks/use-table-url-state'
+
+export function YourTable({ data }: { data: YourType[] }) {
+  const [rowSelection, setRowSelection] = useState({})
+  const { pagination, onPaginationChange, columnFilters, onColumnFiltersChange } = 
+    useTableUrlState({
+      pagination: { defaultPage: 1, defaultPageSize: 10 },
+      globalFilter: { enabled: true },
+      columnFilters: [
+        { columnId: 'status', searchKey: 'status', type: 'array' },
+      ],
+    })
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: { pagination, rowSelection, columnFilters },
+    onPaginationChange,
+    onColumnFiltersChange,
+    onRowSelectionChange: setRowSelection,
+    // ... other table options
+  })
+
+  return (
+    <>
+      <DataTableToolbar table={table} />
+      {/* Table rendering */}
+      <DataTablePagination table={table} />
+    </>
+  )
+}
+```
+
+---
+
 ## Security Checklist
 
 Before merging any code:

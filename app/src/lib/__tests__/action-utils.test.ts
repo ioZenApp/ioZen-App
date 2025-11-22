@@ -75,7 +75,7 @@ describe('createObjectAction', () => {
     const schema = z.object({ id: z.string() })
 
     const action = createObjectAction(schema, async () => {
-      throw 'Unknown error'  // eslint-disable-line @typescript-eslint/only-throw-error
+      throw 'Unknown error'   
     })
 
     const result = await action({ id: '123' })

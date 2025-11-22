@@ -73,7 +73,7 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
   }
 
   return (
-    <nav className="h-16 border-b bg-black" style={{ borderColor: 'hsl(var(--border-primary))' }}>
+    <nav className="h-16 border-b bg-background border-border">
       <div className="h-full px-6 flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center">
@@ -85,7 +85,7 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
               <rect x="10" y="10" width="30" height="80" rx="4" fill="white" />
               <circle cx="25" cy="50" r="12" fill="black" />
             </svg>
-            <span className="text-2xl font-bold text-white">iozen</span>
+            <span className="text-2xl font-bold text-foreground">iozen</span>
           </Link>
         </div>
 
@@ -102,13 +102,13 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
                   'px-4 py-2 text-sm font-medium transition-colors rounded-md',
                   'relative',
                   isActive
-                    ? 'text-[var(--text-primary)]'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 {link.label}
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--text-primary)]" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                 )}
               </Link>
             )
@@ -121,7 +121,7 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}
             </Link>
@@ -132,24 +132,24 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
               <DropdownMenuTrigger asChild>
                 <button
                   suppressHydrationWarning
-                  className="flex items-center gap-2 p-1 rounded-full hover:bg-[var(--background-tertiary)] transition-colors"
+                  className="flex items-center gap-2 p-1 rounded-full hover:bg-accent transition-colors"
                   aria-label="User menu"
                 >
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={profile.avatarUrl || undefined} />
-                    <AvatarFallback className="bg-[var(--background-tertiary)] text-[var(--text-secondary)] text-xs">
+                    <AvatarFallback className="bg-muted text-muted-foreground text-xs">
                       {getInitials(profile.name, profile.email)}
                     </AvatarFallback>
                   </Avatar>
-                  <ChevronDown className="w-4 h-4 text-[var(--text-secondary)]" />
+                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-2 py-1.5">
-                  <p className="text-sm font-medium text-[var(--text-primary)]">
+                  <p className="text-sm font-medium">
                     {profile.name || 'User'}
                   </p>
-                  <p className="text-xs text-[var(--text-secondary)] truncate">
+                  <p className="text-xs text-muted-foreground truncate">
                     {profile.email}
                   </p>
                 </div>
@@ -166,7 +166,7 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={handleLogout}
-                  className="flex items-center gap-2 cursor-pointer text-red-500 focus:text-red-500"
+                  className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign out
@@ -175,10 +175,10 @@ export function Navigation({ workspaceSlug, profile }: NavigationProps) {
             </DropdownMenu>
           ) : (
             <button
-              className="w-10 h-10 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] flex items-center justify-center hover:bg-[var(--border-primary)] transition-colors"
+              className="w-10 h-10 rounded-full bg-muted border border-border flex items-center justify-center hover:bg-accent transition-colors"
               aria-label="User menu"
             >
-              <User className="w-5 h-5 text-[var(--text-secondary)]" />
+              <User className="w-5 h-5 text-muted-foreground" />
             </button>
           )}
         </div>

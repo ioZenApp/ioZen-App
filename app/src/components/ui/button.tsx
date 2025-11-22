@@ -8,17 +8,19 @@ export const buttonVariants = cva(
     {
         variants: {
             variant: {
-                primary: 'bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] hover:bg-[var(--button-primary-hover)] active:scale-[0.98]',
-                secondary: 'bg-[var(--button-secondary-bg)] text-[var(--button-secondary-text)] border border-[var(--button-secondary-border)] hover:bg-[var(--button-secondary-hover)]',
-                outline: 'border border-neutral-800 bg-transparent text-neutral-400 hover:bg-neutral-900 hover:text-white',
-                ghost: 'bg-transparent text-[var(--text-primary)] hover:bg-[var(--background-tertiary)]',
-                icon: 'bg-transparent text-[var(--text-secondary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--text-primary)]',
+                primary: 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98]',
+                secondary: 'bg-secondary text-secondary-foreground border border-border hover:bg-secondary/80',
+                outline: 'border border-input bg-transparent hover:bg-accent hover:text-accent-foreground',
+                ghost: 'hover:bg-accent hover:text-accent-foreground',
+                icon: 'bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+                destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98]',
+                default: 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98]',
             },
             size: {
-                sm: 'h-9 px-3 text-sm rounded-[var(--radius-md)]',
-                md: 'h-10 px-4 text-sm rounded-[var(--radius-md)]',
-                lg: 'h-11 px-6 text-base rounded-[var(--radius-md)]',
-                icon: 'h-9 w-9 rounded-[var(--radius-sm)]',
+                sm: 'h-9 px-3 text-sm rounded-md',
+                md: 'h-10 px-4 text-sm rounded-md',
+                lg: 'h-11 px-6 text-base rounded-md',
+                icon: 'h-9 w-9 rounded-sm',
             },
         },
         defaultVariants: {

@@ -28,7 +28,7 @@ export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>
         return (
             <thead
                 ref={ref}
-                className={cn('border-b border-[var(--border-primary)]', className)}
+                className={cn('border-b border-border', className)}
                 {...props}
             />
         );
@@ -64,9 +64,9 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
             <tr
                 ref={ref}
                 className={cn(
-                    'border-b border-[var(--border-secondary)] last:border-0',
+                    'border-b border-border/50 last:border-0',
                     'transition-colors duration-200',
-                    clickable && 'hover:bg-[#0f0f0f] cursor-pointer',
+                    clickable && 'hover:bg-muted cursor-pointer',
                     className
                 )}
                 {...props}
@@ -87,7 +87,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
                 ref={ref}
                 className={cn(
                     'text-left px-4 py-3',
-                    'text-xs font-semibold text-[var(--text-tertiary)] uppercase tracking-wider',
+                    'text-xs font-semibold text-muted-foreground uppercase tracking-wider',
                     className
                 )}
                 {...props}
@@ -99,7 +99,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
 TableHead.displayName = 'TableHead';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TableCellProps extends HTMLAttributes<HTMLTableCellElement> { }
+export interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> { }
 
 export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
     ({ className, ...props }, ref) => {
@@ -108,7 +108,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
                 ref={ref}
                 className={cn(
                     'px-4 py-4',
-                    'text-sm text-[var(--text-primary)]',
+                    'text-sm',
                     className
                 )}
                 {...props}

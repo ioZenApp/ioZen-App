@@ -2,3 +2,4 @@ export { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 export { Toaster } from './sonner'
 export { Progress } from './progress'
 export { Skeleton } from './skeleton'
+export { LoadingTable } from './loading-table'

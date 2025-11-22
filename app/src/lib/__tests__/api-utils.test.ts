@@ -60,7 +60,7 @@ describe('createApiHandler', () => {
 
   it('handles unknown errors', async () => {
     const handler = createApiHandler(async () => {
-      throw 'Unknown error'  // eslint-disable-line @typescript-eslint/only-throw-error
+      throw 'Unknown error'   
     })
 
     const req = new NextRequest('http://localhost:3000/api/test')

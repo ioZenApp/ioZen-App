@@ -3,7 +3,7 @@ import { type ReactNode } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import prisma from '@/lib/db'
 import { WorkspaceProvider } from '@/lib/workspace-context'
-import { Navigation } from '@/components/layout/navigation'
+import { AuthenticatedLayout } from '@/components/layout/authenticated-layout'
 
 interface WorkspaceLayoutProps {
   children: ReactNode
@@ -65,10 +65,9 @@ export default async function WorkspaceLayout({
         role: membership.role,
       }}
     >
-      <div className="min-h-screen bg-background">
-        <Navigation workspaceSlug={workspaceSlug} profile={profile} />
-        <main>{children}</main>
-      </div>
+      <AuthenticatedLayout workspace={workspace} profile={profile}>
+        {children}
+      </AuthenticatedLayout>
     </WorkspaceProvider>
   )
 }

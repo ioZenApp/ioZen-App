@@ -9,7 +9,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>(
             <div
                 ref={ref}
                 className={cn(
-                    'bg-[var(--background-secondary)] border border-[var(--border-primary)] rounded-[var(--radius-lg)] overflow-hidden',
+                    'bg-card border border-border rounded-lg overflow-hidden',
                     className
                 )}
                 {...props}
@@ -28,7 +28,7 @@ export const PanelHeader = forwardRef<HTMLDivElement, PanelHeaderProps>(
             <div
                 ref={ref}
                 className={cn(
-                    'px-6 py-5 border-b border-[var(--border-primary)]',
+                    'px-6 py-5 border-b border-border',
                     className
                 )}
                 {...props}

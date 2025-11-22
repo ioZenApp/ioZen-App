@@ -15,6 +15,7 @@ const badgeVariants = cva(
                 archived: 'bg-[rgba(107,114,128,0.1)] text-[var(--status-inactive)] border-[rgba(107,114,128,0.2)]',
                 outline: 'bg-neutral-950 border-neutral-800 text-neutral-400',
                 secondary: 'bg-neutral-900 text-neutral-400 border-neutral-800',
+                default: 'bg-neutral-900 text-neutral-400 border-neutral-800',
             },
         },
         defaultVariants: {

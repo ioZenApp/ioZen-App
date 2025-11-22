@@ -312,6 +312,56 @@ export function ChatflowMonitor({ chatflowId }: { chatflowId: string }) {
 
 ---
 
+## Admin Dashboard Layout
+
+IoZen uses a collapsible sidebar layout for the admin dashboard, inspired by shadcn-admin patterns:
+
+- **Sidebar**: Context-aware navigation with workspace routes
+- **Header**: Global search (Cmd+K), theme switcher, profile dropdown
+- **Main**: Content area with container queries for responsive components
+- **Mobile**: Drawer-style sidebar for touch devices
+
+### Key Components
+
+- `AuthenticatedLayout` - Wraps all authenticated routes with sidebar and header
+- `AppSidebar` - Dynamic sidebar with workspace context and collapsible navigation
+- `CommandMenu` - Global search with keyboard shortcuts (Cmd+K or Ctrl+K)
+- `Header` - Top navigation bar with search, theme toggle, and user profile
+- `Main` - Content area with fixed and fluid layout options
+
+### Layout Persistence
+
+- Sidebar state (open/closed) persists via cookies
+- Layout preferences (variant, collapsibility) managed by `LayoutProvider`
+- Mobile devices automatically use drawer-style sidebar
+
+### Navigation Patterns
+
+The sidebar navigation is dynamically generated based on workspace context:
+
+```typescript
+// Example: Dynamic navigation based on workspace
+const navGroups: NavGroup[] = [
+  {
+    title: 'Workspace',
+    items: [
+      { title: 'Dashboard', url: `/w/${workspaceSlug}/dashboard`, icon: LayoutDashboard },
+      { title: 'Chatflows', url: `/w/${workspaceSlug}/chatflows`, icon: MessageSquare },
+      { title: 'Analytics', url: `/w/${workspaceSlug}/analytics`, icon: BarChart3 },
+    ],
+  },
+]
+```
+
+### Global Search
+
+The command menu (`CommandMenu`) provides instant navigation:
+- Keyboard shortcut: `Cmd+K` (Mac) or `Ctrl+K` (Windows/Linux)
+- Searches through all workspace navigation items
+- Provides quick access to settings and profile pages
+
+---
+
 ## Directory Structure
 
 ```
