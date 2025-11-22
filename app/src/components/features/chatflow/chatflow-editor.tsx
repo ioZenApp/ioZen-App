@@ -186,14 +186,14 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="space-y-1">
                     <h2 className="text-2xl font-bold tracking-tight">Configure Fields</h2>
-                    <p className="text-neutral-400">Manage the fields and structure of your chatflow.</p>
+                    <p className="text-muted-foreground">Manage the fields and structure of your chatflow.</p>
                 </div>
-                <div className="inline-flex rounded-lg bg-neutral-900 p-1 border border-neutral-800">
+                <div className="inline-flex rounded-lg bg-muted p-1 border border-border">
                     <button
                         onClick={() => setActiveTab("config")}
                         className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "config"
-                            ? "bg-neutral-800 text-white"
-                            : "text-neutral-400 hover:text-neutral-200"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         Configuration
@@ -201,8 +201,8 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                     <button
                         onClick={() => setActiveTab("preview")}
                         className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "preview"
-                            ? "bg-neutral-800 text-white"
-                            : "text-neutral-400 hover:text-neutral-200"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         Preview
@@ -216,44 +216,43 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         {/* Left Panel - Fields List */}
                         <div className={`lg:col-span-4 ${selectedFieldId ? 'hidden lg:block' : ''}`}>
-                            <Card className="bg-black border-neutral-800">
+                            <Card>
                                 <CardHeader className="space-y-4 pb-4">
                                     <div className="space-y-2">
-                                        <Label className="text-neutral-300 text-sm font-medium">Chatflow Name</Label>
+                                        <Label className="text-sm font-medium">Chatflow Name</Label>
                                         <div className="relative">
                                             <Input
                                                 value={chatflowName}
                                                 onChange={(e) => setChatflowName(e.target.value)}
                                                 className={cn(
-                                                    "bg-neutral-950 border-neutral-800 text-neutral-200 pr-10",
-                                                    chatflowName === "Generating Chatflow..." && "animate-pulse text-neutral-400"
+                                                    "pr-10",
+                                                    chatflowName === "Generating Chatflow..." && "animate-pulse"
                                                 )}
                                                 placeholder="My Awesome Chatflow"
                                                 disabled={chatflowName === "Generating Chatflow..."}
                                             />
                                             {chatflowName === "Generating Chatflow..." && (
                                                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                                                    <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+                                                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
                                                 </div>
                                             )}
                                         </div>
                                         {chatflowName === "Generating Chatflow..." && (
-                                            <p className="text-xs text-blue-400 animate-pulse">
+                                            <p className="text-xs text-primary animate-pulse">
                                                 AI is generating your chatflow structure...
                                             </p>
                                         )}
                                     </div>
-                                    <Separator className="bg-neutral-800" />
+                                    <Separator />
                                     <div className="flex flex-row items-center justify-between">
                                         <div>
                                             <CardTitle className="text-lg">Fields</CardTitle>
-                                            <CardDescription className="text-neutral-500 text-sm">Manage your fields.</CardDescription>
+                                            <CardDescription className="text-sm">Manage your fields.</CardDescription>
                                         </div>
                                         <Button
                                             size="sm"
-                                            variant="ghost"
+                                            variant="outline"
                                             onClick={handleAddField}
-                                            className="text-neutral-300 hover:text-white hover:bg-neutral-800 border border-neutral-800 transition-colors"
                                         >
                                             <Plus className="h-4 w-4 mr-2" />
                                             Add Field
@@ -288,7 +287,7 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                         {/* Right Panel - Field Editor or Empty State */}
                         <div className="lg:col-span-8 hidden lg:block">
                             {selectedField ? (
-                                <Card className="bg-black border-neutral-800 h-full overflow-hidden">
+                                <Card className="h-full overflow-hidden">
                                     <FieldEditor
                                         field={selectedField}
                                         onSave={(updatedField) => {
@@ -303,18 +302,18 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                                     />
                                 </Card>
                             ) : (
-                                <div className="h-full flex flex-col items-center justify-center text-center p-8 border border-neutral-800 rounded-lg bg-neutral-950/50 border-dashed">
-                                    <div className="h-12 w-12 rounded-full bg-neutral-900 flex items-center justify-center mb-4">
-                                        <Settings2 className="h-6 w-6 text-neutral-500" />
+                                <div className="h-full flex flex-col items-center justify-center text-center p-8 border border-dashed rounded-lg bg-muted/50">
+                                    <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4">
+                                        <Settings2 className="h-6 w-6 text-muted-foreground" />
                                     </div>
-                                    <h3 className="text-lg font-medium text-neutral-200">No Field Selected</h3>
-                                    <p className="text-neutral-500 max-w-xs mt-2">
+                                    <h3 className="text-lg font-medium">No Field Selected</h3>
+                                    <p className="text-muted-foreground max-w-xs mt-2">
                                         Select a field from the list on the left to edit its properties, or add a new field.
                                     </p>
                                     <Button
                                         variant="outline"
                                         onClick={handleAddField}
-                                        className="mt-6 border-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-800"
+                                        className="mt-6"
                                     >
                                         <Plus className="mr-2 h-4 w-4" />
                                         Add New Field
@@ -327,27 +326,26 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                 ) : (
                     <div className="w-full">
                         {/* Chat Interface with integrated header */}
-                        <div className="flex flex-col h-[calc(100vh-420px)] w-full max-w-5xl mx-auto bg-black border border-neutral-800 rounded-xl overflow-hidden shadow-2xl">
+                        <div className="flex flex-col h-[calc(100vh-420px)] w-full max-w-5xl mx-auto bg-card border border-border rounded-xl overflow-hidden shadow-lg">
                             {/* Integrated Header with Chat Preview title and actions */}
-                            <div className="h-14 border-b border-neutral-800 bg-neutral-950/50 flex items-center justify-between px-4 md:px-6 backdrop-blur-sm flex-shrink-0">
-                                <h3 className="text-base font-semibold text-neutral-200">Chat Preview</h3>
+                            <div className="h-14 border-b border-border bg-muted/50 flex items-center justify-between px-4 md:px-6 backdrop-blur-sm flex-shrink-0">
+                                <h3 className="text-base font-semibold text-foreground">Chat Preview</h3>
 
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="border-neutral-700 text-neutral-300 hover:text-white hover:bg-neutral-800"
                                         >
                                             Actions
                                             <ChevronDown className="ml-2 h-4 w-4" />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56 bg-neutral-900 border-neutral-700">
+                                    <DropdownMenuContent align="end" className="w-56">
                                         <DropdownMenuItem
                                             onClick={handleSaveClick}
                                             disabled={isSaving}
-                                            className="cursor-pointer text-neutral-200 hover:text-white hover:bg-neutral-800 focus:bg-neutral-800 focus:text-white"
+                                            className="cursor-pointer"
                                         >
                                             {isSaving ? (
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -363,7 +361,7 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                                                 navigator.clipboard.writeText(shareUrl);
                                                 toast.success("Link copied to clipboard");
                                             }}
-                                            className="cursor-pointer text-neutral-200 hover:text-white hover:bg-neutral-800 focus:bg-neutral-800 focus:text-white"
+                                            className="cursor-pointer"
                                         >
                                             <ExternalLink className="mr-2 h-4 w-4" />
                                             <span>Copy Share Link</span>
@@ -371,7 +369,7 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                                         <DropdownMenuItem
                                             onClick={handlePublishClick}
                                             disabled={isPublishing}
-                                            className="cursor-pointer text-neutral-200 hover:text-white hover:bg-neutral-800 focus:bg-neutral-800 focus:text-white"
+                                            className="cursor-pointer"
                                         >
                                             {isPublishing ? (
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -395,29 +393,29 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
 
             {/* Success Dialog */}
             <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-                <DialogContent className="bg-neutral-900 border-neutral-800 max-w-md">
+                <DialogContent className="max-w-md">
                     <DialogHeader>
                         <div className="flex items-center justify-center mb-4">
                             <div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
                                 <CheckCircle2 className="h-6 w-6 text-green-500" />
                             </div>
                         </div>
-                        <DialogTitle className="text-center text-xl text-neutral-100">
+                        <DialogTitle className="text-center text-xl">
                             Chatflow Published Successfully!
                         </DialogTitle>
-                        <DialogDescription className="text-center text-neutral-400">
+                        <DialogDescription className="text-center">
                             Your chatflow is now live and ready to receive submissions.
                         </DialogDescription>
                     </DialogHeader>
 
                     <div className="space-y-4 py-4">
                         <div className="space-y-2">
-                            <Label className="text-sm text-neutral-400">Share URL</Label>
+                            <Label className="text-sm">Share URL</Label>
                             <div className="flex gap-2">
                                 <Input
                                     value={publishedUrl}
                                     readOnly
-                                    className="bg-neutral-950 border-neutral-800 text-neutral-300 font-mono text-sm"
+                                    className="font-mono text-sm"
                                 />
                                 <Button
                                     variant="outline"
@@ -426,7 +424,6 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                                         navigator.clipboard.writeText(publishedUrl);
                                         toast.success("Link copied to clipboard!");
                                     }}
-                                    className="border-neutral-800 hover:bg-neutral-800 hover:text-white"
                                 >
                                     <Copy className="h-4 w-4" />
                                 </Button>
@@ -438,7 +435,7 @@ export function ChatflowEditor({ chatflow }: { chatflow: Chatflow }) {
                         <Button
                             variant="outline"
                             onClick={() => setShowSuccessDialog(false)}
-                            className="flex-1 border-neutral-800 hover:bg-neutral-800 hover:text-white"
+                            className="flex-1"
                         >
                             Close
                         </Button>
@@ -487,27 +484,27 @@ function SortableFieldItem({
             <button
                 onClick={onSelect}
                 className={`w-full text-left p-3 rounded-lg border transition-all duration-200 group relative ${isSelected
-                    ? 'bg-blue-500/10 border-blue-500/50 shadow-sm'
-                    : 'bg-neutral-950/50 border-neutral-800 hover:border-neutral-700 hover:bg-neutral-900/50'
+                    ? 'bg-primary/10 border-primary/50 shadow-sm'
+                    : 'bg-card border-border hover:bg-accent'
                     }`}
             >
                 <div className="flex items-center gap-3">
                     {/* Drag Handle */}
-                    <div {...attributes} {...listeners} suppressHydrationWarning className="cursor-grab active:cursor-grabbing p-1 hover:bg-neutral-900 rounded text-neutral-600 hover:text-neutral-400" onClick={(e) => e.stopPropagation()}>
+                    <div {...attributes} {...listeners} suppressHydrationWarning className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded text-muted-foreground" onClick={(e) => e.stopPropagation()}>
                         <GripVertical className="h-4 w-4" />
                     </div>
 
                     <div className={`h-9 w-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${isSelected
-                        ? 'bg-blue-500/20 border border-blue-500/30'
-                        : 'bg-neutral-900 border border-neutral-800'
+                        ? 'bg-primary/20 border border-primary/30'
+                        : 'bg-muted border border-border'
                         }`}>
-                        <IconComponent className={`h-4 w-4 ${isSelected ? 'text-blue-400' : 'text-neutral-400'}`} />
+                        <IconComponent className={`h-4 w-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <div className={`font-medium text-sm ${isSelected ? 'text-blue-100' : 'text-neutral-200'}`}>
+                        <div className={`font-medium text-sm ${isSelected ? 'text-foreground' : 'text-foreground'}`}>
                             {field.label}
                         </div>
-                        <div className="text-xs text-neutral-500 font-mono truncate mt-0.5">
+                        <div className="text-xs text-muted-foreground font-mono truncate mt-0.5">
                             {field.name}
                         </div>
                     </div>

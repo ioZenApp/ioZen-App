@@ -84,17 +84,17 @@ function SortableOption({ id, value, onRemove }: { id: string, value: string, on
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="flex items-center gap-2 p-2 bg-neutral-950 rounded border border-neutral-800 group">
-            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-1 hover:bg-neutral-900 rounded">
-                <GripVertical className="h-4 w-4 text-neutral-600" />
+        <div ref={setNodeRef} style={style} className="flex items-center gap-2 p-2 bg-muted rounded border border-border group">
+            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-1 hover:bg-accent rounded">
+                <GripVertical className="h-4 w-4 text-muted-foreground" />
             </div>
-            <span className="flex-1 text-neutral-300 text-sm">{value}</span>
+            <span className="flex-1 text-foreground text-sm">{value}</span>
             <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 onClick={onRemove}
-                className="h-6 w-6 p-0 text-neutral-500 hover:text-red-400 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
             >
                 <X className="h-3 w-3" />
             </Button>
@@ -197,10 +197,10 @@ export function FieldEditor({
 
     return (
         <div className={cn("h-full flex flex-col", className)}>
-            <div className="flex items-center justify-between p-6 border-b border-neutral-800 bg-neutral-950/50">
+            <div className="flex items-center justify-between p-6 border-b bg-card">
                 <div>
-                    <h2 className="text-lg font-semibold text-neutral-200">Edit Field</h2>
-                    <p className="text-sm text-neutral-500">Configure {field.label}</p>
+                    <h2 className="text-lg font-semibold">Edit Field</h2>
+                    <p className="text-sm text-muted-foreground">Configure {field.label}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     {onCancel && (
@@ -208,7 +208,6 @@ export function FieldEditor({
                             variant="ghost"
                             size="icon"
                             onClick={onCancel}
-                            className="text-neutral-400 hover:text-white"
                         >
                             <X className="h-5 w-5" />
                         </Button>
@@ -227,7 +226,7 @@ export function FieldEditor({
                                     <FormItem>
                                         <FormLabel>Label</FormLabel>
                                         <FormControl>
-                                            <Input {...field} placeholder="e.g. What is your email?" className="bg-neutral-900 border-neutral-800" />
+                                            <Input {...field} placeholder="e.g. What is your email?" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -241,7 +240,7 @@ export function FieldEditor({
                                     <FormItem>
                                         <FormLabel>Variable Name</FormLabel>
                                         <FormControl>
-                                            <Input {...field} placeholder="e.g. user_email" className="bg-neutral-900 border-neutral-800 font-mono" />
+                                            <Input {...field} placeholder="e.g. user_email" className="font-mono" />
                                         </FormControl>
                                         <FormDescription>Used to reference this field in integrations.</FormDescription>
                                         <FormMessage />
@@ -273,11 +272,11 @@ export function FieldEditor({
                                                         <Card className={cn(
                                                             "p-3 h-full transition-all duration-200 cursor-pointer relative overflow-hidden hover:scale-[1.02]",
                                                             field.value === type.value
-                                                                ? "border-blue-500/50 bg-blue-500/10 ring-2 ring-blue-500/30 shadow-lg shadow-blue-900/20"
-                                                                : "border-neutral-800 bg-neutral-950/50 hover:bg-neutral-900/50 hover:border-neutral-700"
+                                                                ? "border-primary/50 bg-primary/5 ring-2 ring-primary/20 shadow-md"
+                                                                : "border-border bg-card hover:bg-accent hover:shadow-sm"
                                                         )}>
                                                             {field.value === type.value && (
-                                                                <div className="absolute top-2 right-2 bg-blue-500 text-white rounded-full p-0.5 shadow-md">
+                                                                <div className="absolute top-2 right-2 bg-primary text-primary-foreground rounded-full p-0.5 shadow-md">
                                                                     <Check className="h-3 w-3" />
                                                                 </div>
                                                             )}
@@ -285,21 +284,21 @@ export function FieldEditor({
                                                                 <div className={cn(
                                                                     "p-2 rounded-md transition-all duration-200 shrink-0",
                                                                     field.value === type.value
-                                                                        ? "bg-blue-500 text-white shadow-md"
-                                                                        : "bg-neutral-800/50 text-neutral-400"
+                                                                        ? "bg-primary text-primary-foreground shadow-sm"
+                                                                        : "bg-muted text-muted-foreground"
                                                                 )}>
                                                                     <type.icon className="h-4 w-4" />
                                                                 </div>
                                                                 <div className="space-y-1 flex-1">
                                                                     <div className={cn(
                                                                         "font-medium text-sm leading-none transition-colors",
-                                                                        field.value === type.value ? "text-blue-100" : "text-neutral-200"
+                                                                        field.value === type.value ? "text-foreground" : "text-foreground"
                                                                     )}>
                                                                         {type.label}
                                                                     </div>
                                                                     <p className={cn(
                                                                         "text-[11px] leading-snug line-clamp-2 transition-colors",
-                                                                        field.value === type.value ? "text-blue-200/60" : "text-neutral-500"
+                                                                        field.value === type.value ? "text-muted-foreground" : "text-muted-foreground"
                                                                     )}>
                                                                         {type.description}
                                                                     </p>
@@ -317,7 +316,7 @@ export function FieldEditor({
                         />
 
                         {currentType === 'select' && (
-                            <div className="space-y-3 bg-neutral-900/50 p-4 rounded-lg border border-neutral-800">
+                            <div className="space-y-3 bg-muted/30 p-4 rounded-lg border border-border">
                                 <Label>Options</Label>
                                 <div className="flex gap-2">
                                     <Input
@@ -330,13 +329,12 @@ export function FieldEditor({
                                             }
                                         }}
                                         placeholder="Add option..."
-                                        className="bg-neutral-950 border-neutral-800"
                                     />
                                     <Button
                                         type="button"
                                         size="sm"
                                         onClick={handleAddOption}
-                                        className="bg-neutral-800 hover:bg-neutral-700 text-white"
+                                        variant="secondary"
                                     >
                                         <Plus className="h-4 w-4" />
                                     </Button>
@@ -362,7 +360,7 @@ export function FieldEditor({
                                         </SortableContext>
                                     </DndContext>
                                     {(!currentOptions || currentOptions.length === 0) && (
-                                        <p className="text-xs text-neutral-500 italic">No options added yet.</p>
+                                        <p className="text-xs text-muted-foreground italic">No options added yet.</p>
                                     )}
                                 </div>
                             </div>
@@ -378,7 +376,7 @@ export function FieldEditor({
                                     <FormItem>
                                         <FormLabel>Placeholder</FormLabel>
                                         <FormControl>
-                                            <Input {...field} placeholder="e.g. Enter your answer..." className="bg-neutral-900 border-neutral-800" />
+                                            <Input {...field} placeholder="e.g. Enter your answer..." />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -392,8 +390,8 @@ export function FieldEditor({
                                     <FormItem className={cn(
                                         "flex flex-row items-center justify-between rounded-lg border p-4 transition-all duration-300",
                                         field.value
-                                            ? "border-orange-500/50 bg-orange-500/10 shadow-md shadow-orange-900/20"
-                                            : "border-neutral-800 bg-neutral-900/30"
+                                            ? "border-primary/50 bg-primary/5 shadow-sm"
+                                            : "border-border bg-card"
                                     )}>
                                         <div className="space-y-0.5 flex-1">
                                             <div className="flex items-center gap-2">
@@ -401,15 +399,15 @@ export function FieldEditor({
                                                 <span className={cn(
                                                     "text-[10px] font-semibold px-2 py-0.5 rounded-full transition-all duration-300",
                                                     field.value
-                                                        ? "bg-orange-500 text-white shadow-sm"
-                                                        : "bg-neutral-700 text-neutral-400"
+                                                        ? "bg-primary text-primary-foreground shadow-sm"
+                                                        : "bg-muted text-muted-foreground"
                                                 )}>
                                                     {field.value ? "ON" : "OFF"}
                                                 </span>
                                             </div>
                                             <FormDescription className={cn(
                                                 "transition-colors duration-300",
-                                                field.value ? "text-orange-200/70" : "text-neutral-500"
+                                                field.value ? "text-muted-foreground" : "text-muted-foreground"
                                             )}>
                                                 {field.value
                                                     ? "User must answer this question to proceed."
@@ -425,7 +423,6 @@ export function FieldEditor({
                                                         duration: 2000,
                                                     });
                                                 }}
-                                                className="data-[state=checked]:bg-orange-500"
                                             />
                                         </FormControl>
                                     </FormItem>
@@ -434,30 +431,30 @@ export function FieldEditor({
                         </div>
                     </form>
                 </Form>
-                <div className="pt-6 border-t border-neutral-800 flex gap-3">
+                <div className="pt-6 border-t flex gap-3">
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button
                                 type="button"
                                 variant="outline"
-                                className="flex-1 border-red-900/30 text-red-400 hover:bg-red-950 hover:text-red-300 hover:border-red-900/50"
+                                className="flex-1 text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/50"
                             >
                                 <Trash2 className="h-4 w-4 mr-2" />
                                 Delete Field
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="bg-neutral-900 border-neutral-800">
+                        <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle className="text-neutral-200">Are you sure?</AlertDialogTitle>
-                                <AlertDialogDescription className="text-neutral-400">
-                                    This action cannot be undone. This will permanently delete the field <span className="text-neutral-200 font-medium">&quot;{field.label}&quot;</span>.
+                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete the field <span className="text-foreground font-medium">&quot;{field.label}&quot;</span>.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel className="bg-transparent border-neutral-800 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200">Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
                                     onClick={onDelete}
-                                    className="bg-red-900/50 text-red-200 hover:bg-red-900 border border-red-900"
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
                                     Delete
                                 </AlertDialogAction>
@@ -467,7 +464,7 @@ export function FieldEditor({
                     <Button
                         type="button"
                         onClick={form.handleSubmit(onSubmit)}
-                        className="flex-1 bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/20"
+                        className="flex-1"
                     >
                         <Check className="h-4 w-4 mr-2" />
                         Save Changes

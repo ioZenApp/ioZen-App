@@ -57,37 +57,30 @@ export default async function ChatflowsPage({ params }: PageProps) {
             />
 
             {chatflows.length === 0 ? (
-                <Card className="mt-8">
-                    <CardContent className="flex flex-col items-center justify-center py-16">
-                        <MessageSquare className="w-12 h-12 text-muted-foreground mb-4" />
-                        <h3 className="text-lg font-semibold mb-2">
-                            No chatflows yet
-                        </h3>
-                        <p className="text-muted-foreground mb-6 text-center max-w-md">
-                            Create your first chatflow to start collecting conversational data from your users.
-                        </p>
-                        <Link href={`/w/${workspaceSlug}/chatflows/new`}>
-                            <Button>
-                                <Plus className="w-4 h-4 mr-2" />
-                                Create Chatflow
-                            </Button>
-                        </Link>
-                    </CardContent>
-                </Card>
+                <div className="flex flex-col items-center justify-center py-16">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+                        <MessageSquare className="h-10 w-10 text-muted-foreground" />
+                    </div>
+                    <h3 className="mt-6 text-lg font-semibold">No chatflows yet</h3>
+                    <p className="text-muted-foreground mt-2 text-center text-sm max-w-md">
+                        Create your first chatflow to start collecting conversational data from your users.
+                    </p>
+                    <Link href={`/w/${workspaceSlug}/chatflows/new`} className="mt-6">
+                        <Button>
+                            <Plus className="w-4 h-4 mr-2" />
+                            Create Chatflow
+                        </Button>
+                    </Link>
+                </div>
             ) : (
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <ul className="grid gap-4 pt-4 md:grid-cols-2 lg:grid-cols-3">
                     {chatflows.map((chatflow) => (
-                        <Link
-                            key={chatflow.id}
-                            href={`/w/${workspaceSlug}/chatflows/${chatflow.id}`}
-                        >
-                            <Card className="h-full hover:border-primary transition-colors cursor-pointer">
-                                <CardContent className="p-6">
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className="flex-1">
-                                            <h3 className="text-lg font-semibold mb-1">
-                                                {chatflow.name}
-                                            </h3>
+                        <li key={chatflow.id}>
+                            <Link href={`/w/${workspaceSlug}/chatflows/${chatflow.id}`}>
+                                <div className="rounded-lg border p-4 hover:shadow-md transition-shadow cursor-pointer h-full">
+                                    <div className="mb-4 flex items-start justify-between gap-4">
+                                        <div className="flex-1 space-y-1">
+                                            <h3 className="font-semibold leading-none">{chatflow.name}</h3>
                                             {chatflow.description && (
                                                 <p className="text-sm text-muted-foreground line-clamp-2">
                                                     {chatflow.description}
@@ -107,23 +100,23 @@ export default async function ChatflowsPage({ params }: PageProps) {
                                         </Badge>
                                     </div>
 
-                                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                         <div className="flex items-center gap-1">
-                                            <BarChart3 className="w-4 h-4" />
-                                            <span>{chatflow._count.submissions} submissions</span>
+                                            <BarChart3 className="h-3.5 w-3.5" />
+                                            <span>{chatflow._count.submissions}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <Clock className="w-4 h-4" />
+                                            <Clock className="h-3.5 w-3.5" />
                                             <span>
                                                 {new Date(chatflow.updatedAt).toLocaleDateString()}
                                             </span>
                                         </div>
                                     </div>
-                                </CardContent>
-                            </Card>
-                        </Link>
+                                </div>
+                            </Link>
+                        </li>
                     ))}
-                </div>
+                </ul>
             )}
         </Container>
     )

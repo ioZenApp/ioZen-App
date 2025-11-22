@@ -1,36 +1,31 @@
-import { type InputHTMLAttributes, forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import * as React from 'react'
+import { cn } from '@/lib/utils'
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    error?: string;
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  error?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ className, type = 'text', error, ...props }, ref) => {
-        return (
-            <div className="w-full">
-                <input
-                    ref={ref}
-                    type={type}
-                    className={cn(
-                        'w-full px-4 py-3 text-sm',
-                        'bg-[var(--input-bg)] text-[var(--input-text)]',
-                        'border border-[var(--input-border)] rounded-[var(--radius-md)]',
-                        'placeholder:text-[var(--input-placeholder)]',
-                        'focus:outline-none focus:border-[var(--input-focus)] focus:bg-[#0f0f0f]',
-                        'transition-all duration-200',
-                        'disabled:opacity-50 disabled:cursor-not-allowed',
-                        error && 'border-red-500',
-                        className
-                    )}
-                    {...props}
-                />
-                {error && (
-                    <p className="mt-1 text-xs text-red-500">{error}</p>
-                )}
-            </div>
-        );
-    }
-);
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, error, ...props }, ref) => {
+    return (
+      <div className={cn("w-full relative", className?.includes("w-") ? "" : "w-full")}>
+        <input
+          type={type}
+          className={cn(
+            'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+            error && 'border-destructive focus-visible:ring-destructive',
+            className
+          )}
+          ref={ref}
+          {...props}
+        />
+        {error && (
+          <p className="mt-1 text-xs text-destructive font-medium">{error}</p>
+        )}
+      </div>
+    )
+  }
+)
+Input.displayName = 'Input'
 
-Input.displayName = 'Input';
+export { Input }

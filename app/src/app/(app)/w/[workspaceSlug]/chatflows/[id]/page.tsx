@@ -57,7 +57,7 @@ export default async function ChatflowEditPage({ params }: PageProps) {
                 backUrl={`/w/${workspaceSlug}/dashboard`}
                 action={
                     <Link href={`/w/${workspaceSlug}/chatflows/${id}/submissions`}>
-                        <Button variant="outline" className="border-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-800">
+                        <Button variant="outline">
                             <BarChart3 className="w-4 h-4 mr-2" />
                             View Submissions
                         </Button>

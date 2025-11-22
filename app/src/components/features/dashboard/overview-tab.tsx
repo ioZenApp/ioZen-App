@@ -91,40 +91,39 @@ export function OverviewTab({ stats, chatflows, workspaceSlug }: OverviewTabProp
         </CardHeader>
         <CardContent>
           {chatflows.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-muted-foreground mb-4">
+            <div className="flex flex-col items-center justify-center py-8">
+              <p className="text-muted-foreground text-sm">
                 No chatflows yet. Create your first one!
               </p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {chatflows.map((chatflow) => (
-                <div key={chatflow.id}>
-                  <Link
-                    href={`/w/${workspaceSlug}/chatflows/${chatflow.id}`}
-                    className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                <Link
+                  key={chatflow.id}
+                  href={`/w/${workspaceSlug}/chatflows/${chatflow.id}`}
+                  className="flex items-center justify-between gap-4 hover:opacity-80 transition-opacity"
+                >
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {chatflow.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {chatflow._count.submissions} submissions
+                    </p>
+                  </div>
+                  <Badge
+                    variant={
+                      chatflow.status === 'PUBLISHED'
+                        ? 'published'
+                        : chatflow.status === 'DRAFT'
+                          ? 'draft'
+                          : 'archived'
+                    }
                   >
-                    <div>
-                      <p className="font-medium">
-                        {chatflow.name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {chatflow._count.submissions} submissions
-                      </p>
-                    </div>
-                    <Badge
-                      variant={
-                        chatflow.status === 'PUBLISHED'
-                          ? 'published'
-                          : chatflow.status === 'DRAFT'
-                            ? 'draft'
-                            : 'archived'
-                      }
-                    >
-                      {chatflow.status.toLowerCase()}
-                    </Badge>
-                  </Link>
-                </div>
+                    {chatflow.status.toLowerCase()}
+                  </Badge>
+                </Link>
               ))}
             </div>
           )}

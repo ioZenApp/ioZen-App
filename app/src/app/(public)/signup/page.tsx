@@ -53,25 +53,25 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4">
-      <Card className="w-full max-w-md bg-[hsl(var(--card))] border-[hsl(var(--border))]">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex items-center gap-2 mb-4">
             <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="30" height="80" rx="4" fill="white" />
-              <circle cx="25" cy="50" r="12" fill="black" />
+              <rect x="10" y="10" width="30" height="80" rx="4" className="fill-foreground" />
+              <circle cx="25" cy="50" r="12" className="fill-background" />
             </svg>
-            <span className="text-2xl font-bold text-white">iozen</span>
+            <span className="text-2xl font-bold">iozen</span>
           </div>
-          <CardTitle className="text-2xl text-white">Create an account</CardTitle>
-          <CardDescription className="text-[hsl(var(--muted-foreground))]">
+          <CardTitle className="text-2xl">Create an account</CardTitle>
+          <CardDescription>
             Enter your details to get started
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-white">Name</Label>
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
                 type="text"
@@ -80,11 +80,10 @@ export default function SignupPage() {
                 onChange={(e) => setName(e.target.value)}
                 required
                 disabled={loading}
-                className="bg-[hsl(var(--input))] border-[hsl(var(--border))] text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-white">Email</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -93,11 +92,10 @@ export default function SignupPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={loading}
-                className="bg-[hsl(var(--input))] border-[hsl(var(--border))] text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-white">Password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -105,22 +103,21 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={loading}
-                className="bg-[hsl(var(--input))] border-[hsl(var(--border))] text-white"
               />
-              <p className="text-xs text-[hsl(var(--muted-foreground))]">
+              <p className="text-xs text-muted-foreground">
                 Must be at least 6 characters
               </p>
             </div>
 
             {error && (
-              <div className="p-3 text-sm text-red-400 bg-red-950/20 border border-red-900/50 rounded-md">
+              <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
                 {error}
               </div>
             )}
 
             <Button
               type="submit"
-              className="w-full bg-white text-black hover:bg-gray-200"
+              className="w-full"
               disabled={loading}
             >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

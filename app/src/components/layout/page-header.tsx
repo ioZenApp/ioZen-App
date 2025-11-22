@@ -34,9 +34,9 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
                         </Button>
                     )}
                     <div>
-                        <h1 className="page-title">{title}</h1>
+                        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
                         {description && (
-                            <p className="secondary-text mt-1">{description}</p>
+                            <p className="text-muted-foreground mt-1">{description}</p>
                         )}
                     </div>
                 </div>

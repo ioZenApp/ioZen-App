@@ -91,7 +91,7 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
         <div className="flex flex-col h-full w-full relative">
             {/* Reset Button for Preview */}
             <div className="absolute top-4 right-4 z-10">
-                <Button variant="outline" size="sm" onClick={handleReset} className="bg-black/50 backdrop-blur-sm border-neutral-800 text-neutral-400 hover:text-white text-xs h-7 px-2">
+                <Button variant="outline" size="sm" onClick={handleReset} className="h-7 px-2 text-xs bg-background/50 backdrop-blur-sm">
                     Restart Preview
                 </Button>
             </div>
@@ -106,16 +106,16 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                         >
                             {/* Avatar */}
                             <div className={`h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'ai'
-                                ? 'bg-neutral-800 text-white border border-neutral-700'
-                                : 'bg-blue-600 text-white'
+                                ? 'bg-muted text-foreground border border-border'
+                                : 'bg-primary text-primary-foreground'
                                 }`}>
                                 {msg.role === 'ai' ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
                             </div>
 
                             {/* Message Bubble */}
-                            <div className={`max-w-[85%] md:max-w-[80%] rounded-2xl px-4 py-2.5 md:px-5 md:py-3 text-sm leading-relaxed ${msg.role === 'ai'
-                                ? 'bg-neutral-900 border border-neutral-800 text-neutral-300 rounded-tl-none'
-                                : 'bg-blue-600 text-white rounded-tr-none'
+                            <div className={`max-w-[85%] md:max-w-[80%] rounded-2xl px-4 py-2.5 md:px-5 md:py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'ai'
+                                ? 'bg-muted border border-border text-foreground rounded-tl-none'
+                                : 'bg-primary text-primary-foreground rounded-tr-none'
                                 }`}>
                                 {msg.content}
                             </div>
@@ -125,7 +125,7 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
             </ScrollArea>
 
             {/* Input Area */}
-            <div className="p-3 md:p-4 bg-neutral-950 border-t border-neutral-800 flex-shrink-0">
+            <div className="p-3 md:p-4 bg-background border-t border-border flex-shrink-0">
                 <div className="relative flex items-end gap-2 max-w-3xl mx-auto">
                     <div className="flex-1">
                         {currentStep < fields.length ? (
@@ -135,12 +135,12 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                                     case 'select':
                                         return (
                                             <Select value={input} onValueChange={setInput}>
-                                                <SelectTrigger className="w-full bg-neutral-900 border-neutral-800 text-neutral-200 h-10 md:h-12 rounded-lg px-4">
+                                                <SelectTrigger className="w-full h-10 md:h-12 rounded-lg px-4">
                                                     <SelectValue placeholder="Select an option" />
                                                 </SelectTrigger>
-                                                <SelectContent className="bg-neutral-900 border-neutral-800 text-neutral-200">
+                                                <SelectContent>
                                                     {field.options?.map((opt: string) => (
-                                                        <SelectItem key={opt} value={opt} className="focus:bg-neutral-800 focus:text-white cursor-pointer">
+                                                        <SelectItem key={opt} value={opt} className="cursor-pointer">
                                                             {opt}
                                                         </SelectItem>
                                                     ))}
@@ -154,15 +154,15 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                                                     <Button
                                                         variant={"outline"}
                                                         className={cn(
-                                                            "w-full justify-start text-left font-normal bg-neutral-900 border-neutral-800 text-neutral-200 h-10 md:h-12 rounded-lg px-4 hover:bg-neutral-800 hover:text-white",
-                                                            !input && "text-neutral-500"
+                                                            "w-full justify-start text-left font-normal h-10 md:h-12 rounded-lg px-4",
+                                                            !input && "text-muted-foreground"
                                                         )}
                                                     >
                                                         <CalendarIcon className="mr-2 h-4 w-4" />
                                                         {input ? format(new Date(input), "PPP") : <span>Pick a date</span>}
                                                     </Button>
                                                 </PopoverTrigger>
-                                                <PopoverContent className="w-auto p-0 bg-neutral-900 border-neutral-800" align="start">
+                                                <PopoverContent className="w-auto p-0" align="start">
                                                     <Calendar
                                                         mode="single"
                                                         selected={input ? new Date(input) : undefined}
@@ -171,7 +171,6 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                                                         captionLayout="dropdown"
                                                         fromYear={1900}
                                                         toYear={new Date().getFullYear() + 10}
-                                                        className="bg-neutral-950 text-neutral-200"
                                                     />
                                                 </PopoverContent>
                                             </Popover>
@@ -189,8 +188,7 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                                                     }
                                                 }}
                                                 placeholder={`Answer for ${field.label}...`}
-                                                className="min-h-[80px] bg-neutral-900 border-neutral-800 focus-visible:ring-neutral-700 text-white rounded-lg px-4 py-3 text-sm md:text-base resize-none placeholder:text-neutral-500"
-                                                style={{ color: 'white' }}
+                                                className="min-h-[80px] rounded-lg px-4 py-3 text-sm md:text-base resize-none"
                                             />
                                         );
                                     default:
@@ -200,8 +198,7 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                                                 onChange={(e) => setInput(e.target.value)}
                                                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                                                 placeholder={`Answer for ${field.label}...`}
-                                                className="bg-neutral-900 border-neutral-800 focus-visible:ring-neutral-700 text-white h-10 md:h-12 rounded-full px-4 md:px-6 text-sm md:text-base placeholder:text-neutral-500"
-                                                style={{ color: 'white' }}
+                                                className="h-10 md:h-12 rounded-full px-4 md:px-6 text-sm md:text-base"
                                             />
                                         );
                                 }
@@ -211,7 +208,7 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                                 value={input}
                                 disabled
                                 placeholder="Chat completed"
-                                className="bg-neutral-900 border-neutral-800 text-neutral-500 h-10 md:h-12 rounded-full px-4 md:px-6 opacity-50 cursor-not-allowed"
+                                className="h-10 md:h-12 rounded-full px-4 md:px-6 opacity-50 cursor-not-allowed"
                             />
                         )}
                     </div>
@@ -219,13 +216,13 @@ export function ChatView({ fields = [] }: { fields?: Field[] }) {
                         onClick={handleSend}
                         disabled={!input.trim() || currentStep >= fields.length}
                         size="icon"
-                        className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-white text-black hover:bg-neutral-200 flex-shrink-0 disabled:opacity-50"
+                        className="h-10 w-10 md:h-12 md:w-12 rounded-full flex-shrink-0"
                     >
                         <Send className="h-4 w-4 md:h-5 md:w-5" />
                     </Button>
                 </div>
                 <div className="text-center mt-2 md:mt-3">
-                    <span className="text-[10px] text-neutral-600 uppercase tracking-widest">Powered by ioZen AI</span>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest">Powered by ioZen AI</span>
                 </div>
             </div>
         </div>

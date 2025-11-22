@@ -84,55 +84,57 @@ export default function CreateChatflowPage() {
             />
 
             <div className="max-w-3xl mx-auto mt-8">
-                <Card className="bg-black border-neutral-800 relative overflow-hidden transition-colors duration-300 hover:border-neutral-700">
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
-
-                    <div className="flex flex-col items-center justify-center min-h-[400px] max-w-2xl mx-auto text-center space-y-8 animate-in zoom-in-95 duration-500 p-8">
-                        <div className="space-y-4">
-                            <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center mx-auto shadow-2xl shadow-blue-900/20 transition-transform duration-500 hover:scale-110 hover:rotate-3">
-                                <Sparkles className="h-10 w-10 text-white" />
+                <Card>
+                    <div className="flex flex-col items-center justify-center p-8 sm:p-12">
+                        <div className="w-full max-w-2xl space-y-8">
+                            {/* Icon and Header */}
+                            <div className="space-y-4 text-center">
+                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-primary/10">
+                                    <Sparkles className="h-8 w-8 text-primary" />
+                                </div>
+                                <div className="space-y-2">
+                                    <h2 className="text-2xl font-bold tracking-tight">Describe your ideal chatflow</h2>
+                                    <p className="text-muted-foreground max-w-md mx-auto">
+                                        Our AI will generate the perfect structure for your needs. You can customize it later.
+                                    </p>
+                                </div>
                             </div>
-                            <h2 className="text-3xl font-semibold tracking-tight">Describe your ideal chatflow</h2>
-                            <p className="text-neutral-400 max-w-md mx-auto">
-                                Our AI will generate the perfect structure for your needs. You can customize it later.
-                            </p>
-                        </div>
 
-                        <div className="w-full space-y-4">
-                            <Textarea
-                                placeholder="e.g. I need a chatflow for collecting car insurance claims. It should ask for policy number, incident date, and photos of the damage."
-                                className="min-h-[120px] bg-neutral-900 border-neutral-800 text-lg p-4 resize-none focus-visible:ring-blue-600 transition-shadow duration-200 focus:shadow-lg focus:shadow-blue-900/20"
-                                value={prompt}
-                                onChange={(e) => setPrompt(e.target.value)}
-                            />
-                            <div className="flex flex-col gap-3">
-                                <Button
-                                    onClick={handleGenerate}
-                                    disabled={isGenerating || !prompt.trim()}
-                                    size="lg"
-                                    className="w-full bg-white text-black hover:bg-neutral-200 font-medium h-12 text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                                >
-                                    {isGenerating ? (
-                                        <>
-                                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                            Generating Structure...
-                                        </>
-                                    ) : (
-                                        <>
-                                            Generate with AI
-                                            <ArrowRight className="ml-2 h-5 w-5" />
-                                        </>
-                                    )}
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    onClick={handleSkip}
-                                    disabled={isGenerating}
-                                    className="text-neutral-500 hover:text-neutral-300"
-                                >
-                                    Skip and use default template
-                                </Button>
+                            {/* Input Area */}
+                            <div className="space-y-4">
+                                <Textarea
+                                    placeholder="e.g. I need a chatflow for collecting car insurance claims. It should ask for policy number, incident date, and photos of the damage."
+                                    className="min-h-[120px] resize-none"
+                                    value={prompt}
+                                    onChange={(e) => setPrompt(e.target.value)}
+                                />
+                                <div className="flex flex-col gap-3">
+                                    <Button
+                                        onClick={handleGenerate}
+                                        disabled={isGenerating || !prompt.trim()}
+                                        size="lg"
+                                        className="w-full"
+                                    >
+                                        {isGenerating ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                                Generating Structure...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Generate with AI
+                                                <ArrowRight className="ml-2 h-5 w-5" />
+                                            </>
+                                        )}
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        onClick={handleSkip}
+                                        disabled={isGenerating}
+                                    >
+                                        Skip and use default template
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
