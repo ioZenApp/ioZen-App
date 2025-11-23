@@ -16,7 +16,7 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
         return (
             <div
                 ref={ref}
-                className={cn('flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8', className)}
+                className={cn('flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-2', className)}
                 {...props}
             >
                 <div className="flex items-start gap-4">

@@ -27,8 +27,7 @@ export default defineConfig({
         branches: 30,
         functions: 30,
         lines: 30
-      },
-      all: false  // Only check coverage for tested files, not all files
+      }
     },
     globals: true
   },

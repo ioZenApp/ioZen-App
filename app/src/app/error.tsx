@@ -5,7 +5,6 @@ import { GeneralError } from '@/components/features/errors/general-error'
 
 export default function Error({
   error,
-  reset: _reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void

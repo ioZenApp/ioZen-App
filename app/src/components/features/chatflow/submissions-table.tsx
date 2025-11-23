@@ -30,8 +30,6 @@ import { submissionsColumns } from './submissions-columns'
 
 export function SubmissionsTable({
   data,
-  workspaceSlug: _workspaceSlug,
-  chatflowId: _chatflowId,
 }: {
   data: ChatflowSubmission[]
   workspaceSlug: string

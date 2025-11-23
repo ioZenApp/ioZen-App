@@ -236,21 +236,21 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
     };
 
     return (
-        <div className="flex flex-col h-full max-w-2xl mx-auto bg-black border border-neutral-800 rounded-xl overflow-hidden shadow-2xl">
+        <div className="flex flex-col h-full max-w-2xl mx-auto bg-background border border-border rounded-xl overflow-hidden shadow-sm">
             {/* Header */}
-            <div className="h-14 border-b border-neutral-800 bg-neutral-950/50 flex items-center justify-between px-6 backdrop-blur-sm">
+            <div className="h-14 border-b border-border bg-muted/30 flex items-center justify-between px-6 backdrop-blur-sm">
                 <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center">
-                        <Bot className="h-4 w-4 text-white" />
+                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                        <Bot className="h-4 w-4 text-primary-foreground" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-semibold text-white">{chatflowName}</h3>
+                        <h3 className="text-sm font-semibold text-foreground">{chatflowName}</h3>
                         <div className="flex items-center gap-1.5">
                             <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                             </span>
-                            <span className="text-xs text-neutral-400">Online</span>
+                            <span className="text-xs text-muted-foreground">Online</span>
                         </div>
                     </div>
                 </div>
@@ -266,18 +266,18 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                         className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                     >
                         <div className={`flex gap-3 max-w-[80%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                            <div className={`h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === "user" ? "bg-neutral-800" : "bg-blue-600/10"
+                            <div className={`h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted border border-border text-foreground"
                                 }`}>
                                 {msg.role === "user" ? (
-                                    <User className="h-4 w-4 text-neutral-400" />
+                                    <User className="h-4 w-4" />
                                 ) : (
-                                    <Bot className="h-4 w-4 text-blue-500" />
+                                    <Bot className="h-4 w-4" />
                                 )}
                             </div>
                             <div className={`space-y-2 ${msg.role === "user" ? "items-end" : "items-start"}`}>
-                                <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${msg.role === "user"
-                                    ? "bg-neutral-800 text-white rounded-tr-none"
-                                    : "bg-neutral-900 border border-neutral-800 text-white rounded-tl-none"
+                                <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.role === "user"
+                                    ? "bg-primary text-primary-foreground rounded-tr-none"
+                                    : "bg-muted border border-border text-foreground rounded-tl-none"
                                     }`}>
                                     {msg.content}
                                 </div>
@@ -291,7 +291,6 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() => handleSubmit(opt)}
-                                                className="bg-neutral-900 border-neutral-800 hover:bg-neutral-800 hover:text-white text-neutral-300 transition-all"
                                             >
                                                 {opt}
                                             </Button>
@@ -310,13 +309,13 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                         className="flex justify-start"
                     >
                         <div className="flex gap-3">
-                            <div className="h-8 w-8 rounded-full bg-blue-600/10 flex items-center justify-center flex-shrink-0">
-                                <Bot className="h-4 w-4 text-blue-500" />
+                            <div className="h-8 w-8 rounded-full bg-muted border border-border flex items-center justify-center flex-shrink-0">
+                                <Bot className="h-4 w-4 text-foreground" />
                             </div>
-                            <div className="bg-neutral-900 border border-neutral-800 px-4 py-3 rounded-2xl rounded-tl-none flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 bg-neutral-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                                <span className="w-1.5 h-1.5 bg-neutral-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                                <span className="w-1.5 h-1.5 bg-neutral-500 rounded-full animate-bounce"></span>
+                            <div className="bg-muted border border-border px-4 py-3 rounded-2xl rounded-tl-none flex items-center gap-1 shadow-sm">
+                                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce"></span>
                             </div>
                         </div>
                     </motion.div>
@@ -325,9 +324,9 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-black border-t border-neutral-800">
+            <div className="p-4 bg-background border-t border-border">
                 {isCompleted ? (
-                    <div className="flex flex-col items-center justify-center py-4 space-y-2 text-green-500 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="flex flex-col items-center justify-center py-4 space-y-2 text-green-600 dark:text-green-500 animate-in fade-in slide-in-from-bottom-4">
                         <CheckCircle2 className="h-8 w-8" />
                         <span className="font-medium">Submission Received</span>
                     </div>
@@ -341,12 +340,12 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                                 if (fieldType === 'select') {
                                     return (
                                         <Select value={inputValue} onValueChange={setInputValue}>
-                                            <SelectTrigger className="w-full bg-neutral-900 border-neutral-800 text-white h-12 rounded-lg px-4 focus:ring-blue-600">
+                                            <SelectTrigger className="w-full h-10 rounded-lg">
                                                 <SelectValue placeholder="Select an option" />
                                             </SelectTrigger>
-                                            <SelectContent className="bg-neutral-900 border-neutral-800 text-white">
+                                            <SelectContent>
                                                 {currentField.options?.map((opt) => (
-                                                    <SelectItem key={opt} value={opt} className="focus:bg-neutral-800 focus:text-white cursor-pointer">
+                                                    <SelectItem key={opt} value={opt} className="cursor-pointer">
                                                         {opt}
                                                     </SelectItem>
                                                 ))}
@@ -362,15 +361,15 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                                                 <Button
                                                     variant={"outline"}
                                                     className={cn(
-                                                        "w-full justify-start text-left font-normal bg-neutral-900 border-neutral-800 text-white h-12 rounded-lg px-4 hover:bg-neutral-800 hover:text-white focus:ring-blue-600",
-                                                        !inputValue && "text-neutral-500"
+                                                        "w-full justify-start text-left font-normal h-10 rounded-lg",
+                                                        !inputValue && "text-muted-foreground"
                                                     )}
                                                 >
                                                     <CalendarIcon className="mr-2 h-4 w-4" />
                                                     {inputValue ? format(new Date(inputValue), "PPP") : <span>Pick a date</span>}
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0 bg-neutral-900 border-neutral-800" align="start">
+                                            <PopoverContent className="w-auto p-0" align="start">
                                                 <Calendar
                                                     mode="single"
                                                     selected={inputValue ? new Date(inputValue) : undefined}
@@ -379,7 +378,6 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                                                     captionLayout="dropdown"
                                                     fromYear={1900}
                                                     toYear={new Date().getFullYear() + 10}
-                                                    className="bg-neutral-950 text-white"
                                                 />
                                             </PopoverContent>
                                         </Popover>
@@ -400,8 +398,7 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                                             }}
                                             placeholder={isTyping ? "Wait for bot..." : "Type your answer..."}
                                             disabled={isTyping || isSubmitting}
-                                            className="min-h-[80px] bg-neutral-900 border-neutral-800 focus-visible:ring-blue-600 text-white rounded-lg px-4 py-3 text-base resize-none placeholder:text-neutral-500 !text-white"
-                                            style={{ color: 'white' }}
+                                            className="min-h-[80px] rounded-lg text-base resize-none"
                                         />
                                     );
                                 }
@@ -414,8 +411,7 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                                         onKeyDown={handleKeyDown}
                                         placeholder={isTyping ? "Wait for bot..." : "Type your answer..."}
                                         disabled={isTyping || isSubmitting}
-                                        className="bg-neutral-900 border-neutral-800 focus-visible:ring-blue-600 pr-4 h-12 text-base !text-white placeholder:text-neutral-500"
-                                        style={{ color: 'white' }}
+                                        className="h-10 rounded-lg text-base"
                                     />
                                 );
                             })()}
@@ -424,7 +420,7 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                             size="icon"
                             onClick={() => handleSubmit(inputValue)}
                             disabled={!inputValue.trim() || isTyping || isSubmitting}
-                            className="h-12 w-12 bg-blue-600 hover:bg-blue-500 text-white transition-colors flex-shrink-0"
+                            className="h-10 w-10 rounded-lg flex-shrink-0"
                         >
                             {isSubmitting ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -435,7 +431,7 @@ export function PublicChatView({ chatflowId, fields, chatflowName }: { chatflowI
                     </div>
                 )}
                 <div className="text-center mt-3">
-                    <span className="text-[10px] text-neutral-600 uppercase tracking-wider font-medium">Powered by IoZen</span>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Powered by IoZen</span>
                 </div>
             </div>
         </div>

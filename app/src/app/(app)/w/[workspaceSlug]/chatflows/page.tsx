@@ -4,7 +4,6 @@ import { Plus, MessageSquare, BarChart3, Clock } from 'lucide-react'
 import prisma from '@/lib/db'
 import { createClient } from '@/lib/supabase/server'
 import { Container, PageHeader } from '@/components/layout'
-import { Card, CardContent } from '@/ui/data-display'
 import { Button } from '@/ui/button'
 import { Badge } from '@/ui/data-display'
 

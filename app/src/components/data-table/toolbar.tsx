@@ -28,7 +28,7 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
         <Input
           placeholder={searchPlaceholder}
           value={(table.getState().globalFilter as string) ?? ''}
@@ -37,19 +37,21 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {filters?.map((filter) => {
-          const column = table.getColumn(filter.columnId)
-          return (
-            column && (
-              <DataTableFacetedFilter
-                key={filter.columnId}
-                column={column}
-                title={filter.title}
-                options={filter.options}
-              />
+        <div className="flex gap-x-2">
+          {filters?.map((filter) => {
+            const column = table.getColumn(filter.columnId)
+            return (
+              column && (
+                <DataTableFacetedFilter
+                  key={filter.columnId}
+                  column={column}
+                  title={filter.title}
+                  options={filter.options}
+                />
+              )
             )
-          )
-        })}
+          })}
+        </div>
         {isFiltered && (
           <Button
             variant="ghost"

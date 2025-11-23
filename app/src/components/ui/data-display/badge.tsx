@@ -33,6 +33,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         return (
             <span
                 ref={ref}
+                data-slot='badge'
                 className={cn(badgeVariants({ variant, className }))}
                 {...props}
             >

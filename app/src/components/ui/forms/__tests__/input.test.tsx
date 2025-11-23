@@ -143,5 +143,55 @@ describe('Input', () => {
     render(<Input id="user-input" />)
     expect(screen.getByRole('textbox')).toHaveAttribute('id', 'user-input')
   })
+
+  it('has data-slot attribute', () => {
+    render(<Input />)
+    expect(screen.getByRole('textbox')).toHaveAttribute('data-slot', 'input')
+  })
+
+  it('sets aria-invalid when error prop is provided', () => {
+    render(<Input error="This field is required" />)
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true')
+  })
+
+  it('does not set aria-invalid when no error', () => {
+    render(<Input />)
+    expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-invalid')
+  })
+
+  it('has focus-visible ring classes', () => {
+    render(<Input />)
+    const input = screen.getByRole('textbox')
+    expect(input.className).toContain('focus-visible:ring-[3px]')
+    expect(input.className).toContain('focus-visible:ring-ring/50')
+  })
+
+  it('has shadow-xs class', () => {
+    render(<Input />)
+    const input = screen.getByRole('textbox')
+    expect(input.className).toContain('shadow-xs')
+  })
+
+  it('has dark mode background class', () => {
+    render(<Input />)
+    const input = screen.getByRole('textbox')
+    expect(input.className).toContain('dark:bg-input/30')
+  })
+
+  it('has aria-invalid styling classes', () => {
+    render(<Input />)
+    const input = screen.getByRole('textbox')
+    expect(input.className).toContain('aria-invalid:ring-destructive/20')
+    expect(input.className).toContain('aria-invalid:border-destructive')
+  })
+
+  it('has file input styling classes', () => {
+    const { container } = render(<Input type="file" />)
+    // File inputs don't have a standard accessible role, so we query by tag/type
+    const fileInput = container.querySelector('input[type="file"]')
+    expect(fileInput).toBeInTheDocument()
+    expect(fileInput?.className).toContain('file:inline-flex')
+    expect(fileInput?.className).toContain('file:h-7')
+  })
 })
 

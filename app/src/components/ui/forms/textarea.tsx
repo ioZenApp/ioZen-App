@@ -8,27 +8,18 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     ({ className, error, ...props }, ref) => {
         return (
-            <div className="w-full">
-                <textarea
-                    ref={ref}
-                    className={cn(
-                        'w-full px-4 py-3 text-sm',
-                        'bg-[var(--input-bg)] text-[var(--input-text)]',
-                        'border border-[var(--input-border)] rounded-[var(--radius-md)]',
-                        'placeholder:text-[var(--input-placeholder)]',
-                        'focus:outline-none focus:border-[var(--input-focus)] focus:bg-[#0f0f0f]',
-                        'transition-all duration-200',
-                        'resize-none',
-                        'disabled:opacity-50 disabled:cursor-not-allowed',
-                        error && 'border-red-500',
-                        className
-                    )}
-                    {...props}
-                />
-                {error && (
-                    <p className="mt-1 text-xs text-red-500">{error}</p>
+            <textarea
+                ref={ref}
+                data-slot='textarea'
+                aria-invalid={error ? 'true' : undefined}
+                className={cn(
+                    'placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex min-h-20 w-full min-w-0 rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                    'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+                    'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+                    className
                 )}
-            </div>
+                {...props}
+            />
         );
     }
 );
